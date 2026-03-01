@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bizny — Open Productivity Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0d7377;
+  --teal-dark: #0a5c60;
+  --teal-deeper: #074447;
+  --teal-light: #14a3a8;
+  --teal-pale: #e8f5f5;
+  --white: #ffffff;
+  --off-white: #f4fafa;
+  --text: #0d2b2c;
+  --text-mid: #4a7a7c;
+  --text-dim: #8ab0b2;
+  --border: #d0eaea;
+  --surface: #f0f9f9;
+  --gold: #e8a020;
+  --gold-pale: #fff7e6;
+  --red: #e05454;
+  --red-pale: #ffeaea;
+  --green: #2dbe6c;
+  --green-pale: #e8faf0;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#e8f0f0;font-family:'Montserrat',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:0}
+#app{width:100%;max-width:430px;min-height:100vh;background:var(--off-white);position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,0.15)}
+.screen{display:none;flex-direction:column;min-height:100vh;animation:fadeIn .25s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+
+.glyph{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.glyph svg{display:block}
+
+
+.status-bar{background:var(--teal-deeper);padding:.4rem 1.2rem;display:flex;justify-content:space-between;align-items:center;font-size:.68rem;color:rgba(255,255,255,.8);font-family:'Space Mono',monospace;flex-shrink:0}
+
+
+.app-header{background:var(--teal-dark);padding:1rem 1.2rem 1.2rem;color:white;flex-shrink:0}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.header-logo{display:flex;align-items:center;gap:.6rem}
+.logo-circle{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.header-brand{font-size:1.3rem;font-weight:900;letter-spacing:.05em}
+.icon-btn{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:white;font-size:1rem;transition:background .2s;font-family:inherit}
+.icon-btn:hover{background:rgba(255,255,255,.22)}
+.back-btn{background:rgba(255,255,255,.12);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.header-title{font-size:1rem;font-weight:800}
+.header-sub{font-size:.75rem;color:rgba(255,255,255,.65);margin-top:.3rem}
+.notif-wrap{position:relative}
+.notif-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:white;width:16px;height:16px;border-radius:50%;font-size:.58rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+
+.search-bar{background:rgba(255,255,255,.12);border-radius:8px;padding:.65rem 1rem;display:flex;align-items:center;gap:.6rem;margin-top:.8rem}
+.search-bar input{background:none;border:none;color:white;font-family:'Montserrat',sans-serif;font-size:.85rem;outline:none;flex:1}
+.search-bar input::placeholder{color:rgba(255,255,255,.5)}
+
+
+.scroll-content{flex:1;overflow-y:auto;padding:1.2rem;padding-bottom:90px}
+.scroll-content::-webkit-scrollbar{width:3px}
+.scroll-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:.55rem 0 .75rem;z-index:100;box-shadow:0 -4px 20px rgba(13,115,119,.1)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;padding:.1rem .8rem;border:none;background:none;transition:all .2s}
+.nav-icon{font-size:1.25rem;line-height:1;display:flex;align-items:center;justify-content:center;width:26px;height:26px}
+.nav-label{font-size:.6rem;color:var(--text-dim);font-weight:600;letter-spacing:.03em;font-family:'Montserrat',sans-serif}
+.nav-item.active .nav-label{color:var(--teal)}
+.nav-item.active .nav-icon svg path,.nav-item.active .nav-icon svg rect,.nav-item.active .nav-icon svg circle,.nav-item.active .nav-icon svg polyline,.nav-item.active .nav-icon svg line,.nav-item.active .nav-icon svg polygon{stroke:var(--teal) !important}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);margin:0 auto}
+
+
+.fab{position:fixed;bottom:78px;right:calc(50% - 215px + 14px);width:52px;height:52px;border-radius:50%;background:var(--teal);color:white;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(13,115,119,.4);display:flex;align-items:center;justify-content:center;z-index:99;transition:all .2s}
+.fab:hover{background:var(--teal-light);transform:scale(1.05)}
+
+
+.card{background:white;border-radius:14px;padding:1.1rem;box-shadow:0 2px 10px rgba(13,115,119,.07);border:1px solid var(--border);margin-bottom:1rem;cursor:pointer;transition:all .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,115,119,.13)}
+.card-flat{background:white;border-radius:14px;padding:1.1rem;border:1px solid var(--border);margin-bottom:1rem}
+
+
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem}
+.sec-title{font-size:.95rem;font-weight:800;color:var(--text)}
+.sec-link{font-size:.78rem;color:var(--teal);font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit}
+
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.3rem}
+.stat-card{background:white;border-radius:12px;padding:.85rem;text-align:center;box-shadow:0 2px 8px rgba(13,115,119,.07);border:1px solid var(--border)}
+.stat-num{font-size:1.3rem;font-weight:900;color:var(--teal)}
+.stat-lbl{font-size:.6rem;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem}
+
+
+.pills{display:flex;gap:.55rem;overflow-x:auto;padding-bottom:.4rem;margin-bottom:1.2rem;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{background:white;border:1.5px solid var(--border);color:var(--text-mid);padding:.4rem .9rem;border-radius:20px;font-size:.75rem;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .2s;flex-shrink:0;font-family:inherit}
+.pill.active{background:var(--teal);border-color:var(--teal);color:white}
+
+
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.6rem}
+.pc-icon{width:42px;height:42px;border-radius:10px;background:var(--teal-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc-info{flex:1;margin:0 .8rem}
+.pc-name{font-size:.9rem;font-weight:700;line-height:1.3}
+.pc-loc{font-size:.7rem;color:var(--text-dim);margin-top:.2rem;display:flex;align-items:center;gap:.25rem}
+.badge{font-size:.62rem;font-weight:700;letter-spacing:.05em;padding:.22rem .55rem;border-radius:20px;white-space:nowrap}
+.badge-active{background:var(--green-pale);color:#1a9950}
+.badge-funding{background:var(--gold-pale);color:#b87a10}
+.badge-new{background:var(--teal-pale);color:var(--teal)}
+.badge-red{background:var(--red-pale);color:var(--red)}
+.progress-wrap{margin:.55rem 0}
+.progress-labels{display:flex;justify-content:space-between;margin-bottom:.3rem}
+.progress-labels span{font-size:.68rem;color:var(--text-mid);font-weight:600}
+.progress-track{height:5px;background:var(--teal-pale);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:var(--teal);transition:width 1s ease}
+.progress-fill.gold{background:var(--gold)}
+.pc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.55rem}
+.pc-meta{font-size:.68rem;color:var(--text-dim)}
+.pc-meta strong{color:var(--text);font-weight:700}
+
+
+.tags-row{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.65rem}
+.tag{font-size:.65rem;background:var(--surface);padding:.2rem .55rem;border-radius:4px;color:var(--text-mid);font-weight:500}
+.tag.teal{background:var(--teal-pale);color:var(--teal)}
+
+
+.btn{border:none;padding:.85rem 1.4rem;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.88rem;border-radius:8px;cursor:pointer;transition:all .2s;width:100%;display:block;text-align:center}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-light)}
+.btn-outline{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+.btn-gold{background:var(--gold);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-sm{padding:.55rem 1.1rem;font-size:.78rem;border-radius:6px;width:auto;display:inline-block}
+
+
+.form-group{margin-bottom:1.1rem}
+.form-label{font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:.4rem;display:block}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.8rem 1rem;font-family:'Montserrat',sans-serif;font-size:.88rem;color:var(--text);background:white;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--teal)}
+.form-input.error{border-color:var(--red)}
+.form-textarea{resize:vertical;min-height:80px}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a7a7c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.form-hint{font-size:.7rem;color:var(--text-dim);margin-top:.3rem}
+.form-error{font-size:.7rem;color:var(--red);margin-top:.3rem;display:none}
+.form-divider{text-align:center;color:var(--text-dim);font-size:.78rem;margin:1rem 0;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+.form-divider::before{left:0}
+.form-divider::after{right:0}
+
+
+#toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;padding:.7rem 1.4rem;border-radius:25px;font-size:.82rem;font-weight:600;z-index:999;display:none;max-width:360px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideUp .3s ease}
+#toast.error{background:var(--red)}
+#toast.success{background:#1a9950}
+
+
+.loader{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-right:.5rem;vertical-align:middle}
+
+
+.ai-banner{background:linear-gradient(135deg,var(--teal-dark),var(--teal));border-radius:14px;padding:1.1rem;color:white;margin-bottom:1.3rem;display:flex;align-items:center;gap:.9rem}
+.ai-icon{font-size:1.8rem;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ai-text h4{font-size:.88rem;font-weight:800}
+.ai-text p{font-size:.7rem;opacity:.7;margin-top:.2rem;line-height:1.4}
+.ai-cta{background:white;color:var(--teal-dark);border:none;padding:.45rem .9rem;border-radius:20px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+
+.h-scroll{display:flex;gap:.9rem;overflow-x:auto;padding-bottom:.4rem;scrollbar-width:none}
+.h-scroll::-webkit-scrollbar{display:none}
+.opp-card{background:white;border-radius:12px;padding:.95rem;min-width:185px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(13,115,119,.06);flex-shrink:0;cursor:pointer;transition:all .2s}
+.opp-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.opp-icon{font-size:1.4rem;margin-bottom:.5rem;display:flex;align-items:center}
+.opp-title{font-size:.83rem;font-weight:700;line-height:1.3;margin-bottom:.25rem}
+.opp-sub{font-size:.68rem;color:var(--text-dim)}
+.opp-tag{display:inline-block;margin-top:.55rem;font-size:.62rem;font-weight:700;background:var(--teal-pale);color:var(--teal);padding:.18rem .5rem;border-radius:4px}
+
+
+.deal-card{background:white;border-radius:14px;padding:1.1rem;margin-bottom:1rem;border:1px solid var(--border);box-shadow:0 2px 10px rgba(13,115,119,.07)}
+.deal-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.7rem}
+.deal-name{font-size:.9rem;font-weight:700}
+.deal-sub{font-size:.7rem;color:var(--text-dim);margin-top:.2rem}
+.deal-amount{font-size:1.1rem;font-weight:900;color:var(--teal)}
+.deal-tags{display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap}
+.deal-tag{font-size:.65rem;background:var(--surface);color:var(--text-mid);padding:.2rem .5rem;border-radius:4px;font-weight:600}
+
+
+.chat-wrap{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.2rem}
+.chat-msg{max-width:85%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.bot{background:white;border:1px solid var(--border);align-self:flex-start;border-radius:4px 12px 12px 12px}
+.chat-msg.user{background:var(--teal);color:white;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.chat-msg.thinking{color:var(--text-dim);font-style:italic}
+.chat-input-row{display:flex;gap:.6rem;align-items:center;background:white;border:1.5px solid var(--border);border-radius:25px;padding:.45rem .45rem .45rem 1rem;position:sticky;bottom:10px}
+.chat-input-row input{flex:1;border:none;font-family:'Montserrat',sans-serif;font-size:.83rem;outline:none;color:var(--text);background:none}
+.chat-send{background:var(--teal);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+
+.profile-hd{background:var(--teal-dark);padding:2rem 1.5rem 3rem;text-align:center;color:white;position:relative;flex-shrink:0}
+.avatar{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto .7rem;font-weight:800}
+.profile-name{font-size:1.15rem;font-weight:800}
+.profile-role{font-size:.75rem;opacity:.65;margin-top:.25rem}
+.profile-stats{display:flex;justify-content:space-around;background:white;border-radius:14px;margin:-1.5rem 1rem 1.2rem;padding:1.1rem;position:relative;z-index:1;box-shadow:0 4px 20px rgba(13,115,119,.12);border:1px solid var(--border)}
+.ps-item{text-align:center}
+.ps-num{font-size:1.25rem;font-weight:900;color:var(--teal)}
+.ps-lbl{font-size:.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem}
+.menu-item{display:flex;align-items:center;gap:.9rem;padding:.95rem 1.2rem;background:white;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.menu-item:hover{background:var(--surface)}
+.menu-icon{font-size:1.15rem;width:26px;text-align:center;display:flex;align-items:center;justify-content:center}
+.menu-label{font-size:.87rem;font-weight:600;flex:1}
+.menu-arrow{color:var(--text-dim);font-size:.9rem}
+
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:white;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.2rem}
+.modal-title{font-size:1.1rem;font-weight:800;margin-bottom:1.2rem}
+
+
+.divider{height:8px;background:var(--surface);margin:0 -1.2rem 1.2rem}
+
+
+.empty{text-align:center;padding:3rem 1rem;color:var(--text-dim)}
+.empty-icon{font-size:3rem;margin-bottom:.8rem;display:flex;align-items:center;justify-content:center}
+.empty h3{font-size:.95rem;font-weight:700;color:var(--text-mid);margin-bottom:.4rem}
+.empty p{font-size:.8rem;line-height:1.6}
+
+
+.notif-item{background:white;border-radius:12px;padding:1rem;margin-bottom:.8rem;border:1px solid var(--border);display:flex;gap:.8rem;align-items:flex-start}
+.notif-item.unread{border-left:3px solid var(--teal)}
+.notif-icon{font-size:1.2rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+.notif-text{flex:1}
+.notif-title{font-size:.83rem;font-weight:700}
+.notif-sub{font-size:.7rem;color:var(--text-dim);margin-top:.2rem}
+
+
+.tmpl-card{background:white;border-radius:12px;padding:1rem;border:1px solid var(--border);display:flex;align-items:center;gap:.9rem;margin-bottom:.8rem;cursor:pointer;transition:all .2s}
+.tmpl-card:hover{border-color:var(--teal);background:var(--teal-pale)}
+.tmpl-icon{font-size:1.5rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px}
+.tmpl-name{font-size:.87rem;font-weight:700}
+.tmpl-sub{font-size:.7rem;color:var(--text-dim);margin-top:.15rem}
+.tmpl-arrow{color:var(--text-dim);margin-left:auto}
+
+
+.milestone{display:flex;gap:.8rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--border)}
+.m-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;margin-top:.1rem}
+.m-dot.done{background:var(--green);color:white}
+.m-dot.active{background:var(--teal);color:white}
+.m-dot.pending{background:var(--border);color:var(--text-dim)}
+.m-text{flex:1}
+.m-title{font-size:.83rem;font-weight:700}
+.m-sub{font-size:.7rem;color:var(--text-dim);margin-top:.15rem}
+
+
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:.35rem;animation:pulse 2s ease infinite}
+
+
+#screenSplash{background:var(--teal-dark);align-items:center;justify-content:center;position:relative;overflow:hidden}
+.splash-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
+.splash-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:2rem;width:100%}
+.splash-logo-wrap{animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both}
+.splash-brain{width:88px;height:88px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem;border:2px solid rgba(255,255,255,.2)}
+.splash-brand{color:white;font-size:2.6rem;font-weight:900;letter-spacing:.08em}
+.splash-tag{color:rgba(255,255,255,.55);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Space Mono',monospace;margin-top:.25rem}
+.splash-h1{color:white;font-size:1.5rem;font-weight:800;text-align:center;line-height:1.3;margin:2rem 0 .8rem}
+.splash-sub{color:rgba(255,255,255,.6);text-align:center;font-size:.85rem;line-height:1.6;max-width:320px;margin-bottom:2.5rem}
+.splash-actions{width:100%;max-width:320px;display:flex;flex-direction:column;gap:.75rem}
+.btn-white{background:white;color:var(--teal-dark);border:none;padding:.95rem;font-family:'Montserrat',sans-serif;font-weight:800;font-size:.93rem;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.btn-ghost-w{background:transparent;color:white;border:1.5px solid rgba(255,255,255,.35);padding:.95rem;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.93rem;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn-ghost-w:hover{border-color:white;background:rgba(255,255,255,.08)}
+
+
+.onboard-step{display:none}
+.onboard-step.active{display:block}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.2rem}
+.role-card{background:white;border:2px solid var(--border);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;transition:all .2s}
+.role-card.selected{border-color:var(--teal);background:var(--teal-pale)}
+.role-card:hover{border-color:var(--teal)}
+.role-icon{font-size:1.6rem;margin-bottom:.4rem;display:flex;align-items:center;justify-content:center;height:2rem}
+.role-name{font-size:.82rem;font-weight:700}
+.role-desc{font-size:.65rem;color:var(--text-dim);margin-top:.2rem}
+</style>
+</head>
+<body>
+<div id="app">
+
+
+<svg style="display:none" id="glyphDefs">
+  <defs>
+   
+    <symbol id="g-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/>
+    </symbol>
+    
+    <symbol id="g-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+    </symbol>
+    
+    <symbol id="g-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/>
+    </symbol>
+    
+    <symbol id="g-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
+      <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+      <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+      <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+      <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+    </symbol>
+    
+    <symbol id="g-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </symbol>
+    
+    <symbol id="g-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
+    </symbol>
+   
+    <symbol id="g-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </symbol>
+    
+    <symbol id="g-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+    </symbol>
+    
+    <symbol id="g-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </symbol>
+    
+    <symbol id="g-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+    </symbol>
+    
+    <symbol id="g-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+    </symbol>
+    
+    <symbol id="g-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+    </symbol>
+    
+    <symbol id="g-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+    </symbol>
+    
+    <symbol id="g-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
+      <rect x="8" y="2" width="8" height="4" rx="1"/>
+    </symbol>
+    
+    <symbol id="g-dollar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+    </symbol>
+    
+    <symbol id="g-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+    </symbol>
+    
+    <symbol id="g-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 8C8 10 5.9 16.17 3.82 19.82a.5.5 0 00.62.7C7 19 12.4 17.3 17 8z"/><path d="M17 8l1-5"/>
+    </symbol>
+    
+    <symbol id="g-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 21V9l7-5v5l7-5v5l4-2v14H2z"/><path d="M6 21v-4h4v4M12 9v2M16 9v2"/>
+    </symbol>
+    
+    <symbol id="g-ship" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2c1.3 0 1.9.5 2.5 1"/>
+      <path d="M19.38 14A2 2 0 0120 12.06L21 8H3l1 4.06A2 2 0 015.62 14"/><path d="M12 8V3l-3 1.5"/>
+    </symbol>
+    
+    <symbol id="g-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </symbol>
+    
+    <symbol id="g-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+    </symbol>
+    
+    <symbol id="g-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
+    </symbol>
+    
+    <symbol id="g-health" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+    </symbol>
+    
+    <symbol id="g-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/>
+    </symbol>
+    
+    <symbol id="g-trending" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+    </symbol>
+    
+    <symbol id="g-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </symbol>
+    
+    <symbol id="g-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>
+    </symbol>
+    
+    <symbol id="g-milk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2h8l1 5H7L8 2z"/><path d="M7 7v14a1 1 0 001 1h8a1 1 0 001-1V7"/>
+      <path d="M10 11h4"/>
+    </symbol>
+    
+    <symbol id="g-bug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 9v-1a3 3 0 016 0v1"/><path d="M8 9H5a2 2 0 00-2 2v2c0 1.1.9 2 2 2h1"/>
+      <path d="M16 9h3a2 2 0 012 2v2a2 2 0 01-2 2h-1"/><path d="M8 19a4 4 0 008 0V9H8v10z"/>
+      <line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="15" x2="5" y2="18"/><line x1="16" y1="15" x2="19" y2="18"/>
+    </symbol>
+    
+    <symbol id="g-fruit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2C6 2 3 7 3 12a9 9 0 0018 0c0-5-3-10-9-10z"/>
+      <path d="M12 2v5"/><path d="M9.5 4.5c1.5-1 3.5-1 5 0"/>
+    </symbol>
+    
+    <symbol id="g-textile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12h20M2 12c0-3 3-5 5-5M2 12c0 3 3 5 5 5M22 12c0-3-3-5-5-5M22 12c0 3-3 5-5 5"/>
+      <path d="M7 7c0-2 2-4 5-4s5 2 5 4M7 17c0 2 2 4 5 4s5-2 5-4"/>
+    </symbol>
+    
+    <symbol id="g-jar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3h8a1 1 0 011 1v1H7V4a1 1 0 011-1z"/><path d="M7 5h10l-1 15a2 2 0 01-2 2H10a2 2 0 01-2-2L7 5z"/>
+      <path d="M10 12c1-1 4-1 4 0"/>
+    </symbol>
+    
+    <symbol id="g-fish" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 12C6.5 8 10 5 12 5c4 0 7.5 3 7.5 7S16 19 12 19c-2 0-5.5-3-5.5-7z"/>
+      <path d="M2.5 12L6.5 8M2.5 12L6.5 16"/><circle cx="15" cy="10" r="1" fill="currentColor"/>
+    </symbol>
+    
+    <symbol id="g-plant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22V12"/><path d="M12 12C12 7 16 3 21 3c0 5-4 9-9 9z"/>
+      <path d="M12 12C12 7 8 3 3 3c0 5 4 9 9 9z"/><path d="M12 22c0-4-2-7-5-9M12 22c0-4 2-7 5-9"/>
+    </symbol>
+    
+    <symbol id="g-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.5 14.5A2.5 2.5 0 0011 17c1.5 0 2.5-1.5 2.5-2.5 0-1-.5-2-1.5-3.5-1 1.5-3.5 2.5-3.5 3z"/>
+      <path d="M12 22a7 7 0 007-7c0-5-3-8-7-10-4 2-7 5-7 10a7 7 0 007 7z"/>
+    </symbol>
+    
+    <symbol id="g-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+    </symbol>
+    
+    <symbol id="g-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+    </symbol>
+    
+    <symbol id="g-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+      <line x1="2" y1="20" x2="22" y2="20"/>
+    </symbol>
+    
+    <symbol id="g-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+    </symbol>
+    
+    <symbol id="g-team" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+    </symbol>
+    
+    <symbol id="g-celebrate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 7l-8-4-8 4v6l8 4 8-4V7z"/><path d="M4 7v6l8 4"/><path d="M20 7l-8 4"/><path d="M12 3v4"/>
+    </symbol>
+   
+    <symbol id="g-grain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+      <path d="M12 8v8M8 12h8"/>
+    </symbol>
+    <
+    <symbol id="g-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/>
+      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M15 12v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+    </symbol>
+    
+    <symbol id="g-coins" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1110.34 18"/><path d="M7 6h1v4"/>
+      <path d="M16.71 13.88l.7.71-2.82 2.82"/>
+    </symbol>
+    
+    <symbol id="g-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+    </symbol>
+    
+    <symbol id="g-diaspora" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+      <circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/>
+    </symbol>
+    
+    <symbol id="g-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+    </symbol>
+   
+    <symbol id="g-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </symbol>
+    
+    <symbol id="g-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </symbol>
+    
+    <symbol id="g-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+<div id="toast"></div>
+
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" id="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+
+<div class="screen active" id="screenSplash">
+  <div class="splash-ring" style="width:500px;height:500px;top:-150px;right:-150px"></div>
+  <div class="splash-ring" style="width:350px;height:350px;bottom:-80px;left:-100px"></div>
+  <div class="splash-ring" style="width:200px;height:200px;top:45%;left:55%"></div>
+  <div class="splash-content">
+    <div class="splash-logo-wrap">
+      <div class="splash-brain">
+        <svg width="50" height="50" viewBox="0 0 52 52" fill="none">
+          <path d="M26 10C18 10 13 15 13 21c0 4 2 7 5 9-2 2-3 5-2 8 1 3 4 5 7 5h6c3 0 6-2 7-5 1-3 0-6-2-8 3-2 5-5 5-9 0-6-5-11-13-11z" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+          <circle cx="20" cy="20" r="2.2" fill="white"/><circle cx="26" cy="16" r="2.2" fill="white"/><circle cx="32" cy="20" r="2.2" fill="white"/>
+          <circle cx="19" cy="28" r="2.2" fill="white"/><circle cx="26" cy="30" r="2.2" fill="white"/><circle cx="33" cy="28" r="2.2" fill="white"/>
+          <circle cx="22" cy="38" r="2.2" fill="white"/><circle cx="30" cy="38" r="2.2" fill="white"/>
+          <line x1="20" y1="20" x2="26" y2="16" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="26" y1="16" x2="32" y2="20" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="20" y1="20" x2="19" y2="28" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="32" y1="20" x2="33" y2="28" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="19" y1="28" x2="26" y2="30" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="33" y1="28" x2="26" y2="30" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="26" y1="30" x2="22" y2="38" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+          <line x1="26" y1="30" x2="30" y2="38" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="splash-brand">BIZNY</div>
+      <div class="splash-tag">An Open Productivity Ecosystem</div>
+    </div>
+    <h1 class="splash-h1">Start. Join. Fund.<br>Build Africa's Future.</h1>
+    <p class="splash-sub">The digital infrastructure for Africa's industrialization — connecting talent, capital, and execution in one platform.</p>
+    <div class="splash-actions">
+      <button class="btn-white" onclick="nav('screenRegister')">Create Account</button>
+      <button class="btn-ghost-w" onclick="nav('screenLogin')">Sign In</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="screen" id="screenRegister">
+  <div class="status-bar"><span id="clockR">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenSplash')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Create Account</span>
+      <div style="width:34px"></div>
+    </div>
+    <div class="header-sub">Join 4,200+ members building Africa</div>
+  </div>
+  <div class="scroll-content" style="padding-bottom:30px">
+    <div class="onboard-step active" id="regStep1">
+      <div style="margin-bottom:1.2rem">
+        <div style="display:flex;gap:.4rem;margin-bottom:1rem">
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--border);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--border);border-radius:2px"></div>
+        </div>
+        <div style="font-size:.75rem;color:var(--text-dim)">Step 1 of 3 — Personal Info</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="regName" type="text" placeholder="e.g. Chukwuemeka Okafor">
+        <div class="form-error" id="errName">Please enter your full name</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="regEmail" type="email" placeholder="you@example.com">
+        <div class="form-error" id="errEmail">Please enter a valid email</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" id="regPhone" type="tel" placeholder="+234 800 000 0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="regPass" type="password" placeholder="Min. 6 characters">
+        <div class="form-error" id="errPass">Password must be at least 6 characters</div>
+      </div>
+      <button class="btn btn-teal" onclick="regStep1()">Continue →</button>
+      <div class="form-divider" style="margin-top:1.2rem">already have an account?</div>
+      <button class="btn btn-outline" onclick="nav('screenLogin')">Sign In</button>
+    </div>
+
+    <div class="onboard-step" id="regStep2">
+      <div style="margin-bottom:1.2rem">
+        <div style="display:flex;gap:.4rem;margin-bottom:1rem">
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--border);border-radius:2px"></div>
+        </div>
+        <div style="font-size:.75rem;color:var(--text-dim)">Step 2 of 3 — Your Role</div>
+      </div>
+      <div style="font-size:.95rem;font-weight:800;margin-bottom:.4rem">What best describes you?</div>
+      <div style="font-size:.78rem;color:var(--text-dim);margin-bottom:1.2rem">You can have multiple roles. Select all that apply.</div>
+      <div class="role-grid" id="roleGrid">
+        <div class="role-card" data-role="Founder" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-rocket"/></svg></div>
+          <div class="role-name">Founder</div><div class="role-desc">Starting a business</div>
+        </div>
+        <div class="role-card" data-role="Investor" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-coins"/></svg></div>
+          <div class="role-name">Investor</div><div class="role-desc">Fund projects</div>
+        </div>
+        <div class="role-card" data-role="Engineer" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-wrench"/></svg></div>
+          <div class="role-name">Engineer</div><div class="role-desc">Technical skills</div>
+        </div>
+        <div class="role-card" data-role="Manufacturer" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-factory"/></svg></div>
+          <div class="role-name">Manufacturer</div><div class="role-desc">Production capacity</div>
+        </div>
+        <div class="role-card" data-role="Exporter" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-ship"/></svg></div>
+          <div class="role-name">Exporter</div><div class="role-desc">Cross-border trade</div>
+        </div>
+        <div class="role-card" data-role="Diaspora" onclick="toggleRole(this)">
+          <div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-diaspora"/></svg></div>
+          <div class="role-name">Diaspora</div><div class="role-desc">Abroad contributor</div>
+        </div>
+      </div>
+      <div class="form-error" id="errRole" style="display:block;opacity:0">Select at least one role</div>
+      <button class="btn btn-teal" onclick="regStep2()">Continue →</button>
+    </div>
+
+    <div class="onboard-step" id="regStep3">
+      <div style="margin-bottom:1.2rem">
+        <div style="display:flex;gap:.4rem;margin-bottom:1rem">
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+          <div style="flex:1;height:4px;background:var(--teal);border-radius:2px"></div>
+        </div>
+        <div style="font-size:.75rem;color:var(--text-dim)">Step 3 of 3 — Location & Focus</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Country</label>
+        <select class="form-input form-select" id="regCountry">
+          <option value="">Select country</option>
+          <option>Nigeria</option><option>Ghana</option><option>Kenya</option>
+          <option>South Africa</option><option>Ethiopia</option><option>Rwanda</option>
+          <option>Senegal</option><option>Côte d'Ivoire</option>
+          <option>UK (Diaspora)</option><option>USA (Diaspora)</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">State / City</label>
+        <input class="form-input" id="regCity" type="text" placeholder="e.g. Lagos, Nairobi, Accra">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Primary Industry Focus</label>
+        <select class="form-input form-select" id="regSector">
+          <option value="">Select sector</option>
+          <option>Agriculture & Agro-processing</option><option>Manufacturing</option>
+          <option>Export & Trade</option><option>Energy & Utilities</option>
+          <option>Technology</option><option>Food & Beverage</option>
+          <option>Healthcare</option><option>Construction & Infrastructure</option>
+          <option>Finance & Investment</option>
+        </select>
+      </div>
+      <button class="btn btn-teal" id="regFinalBtn" onclick="completeReg()">Create My Account</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="screen" id="screenLogin">
+  <div class="status-bar"><span id="clockL">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenSplash')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Sign In</span>
+      <div style="width:34px"></div>
+    </div>
+    <div class="header-sub">Welcome back to Bizny</div>
+  </div>
+  <div class="scroll-content" style="padding-bottom:30px">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div class="splash-brain" style="margin:0 auto 1rem;width:70px;height:70px;background:var(--teal-pale);border:none">
+        <svg width="40" height="40" viewBox="0 0 52 52" fill="none">
+          <path d="M26 10C18 10 13 15 13 21c0 4 2 7 5 9-2 2-3 5-2 8 1 3 4 5 7 5h6c3 0 6-2 7-5 1-3 0-6-2-8 3-2 5-5 5-9 0-6-5-11-13-11z" fill="var(--teal-pale)" stroke="var(--teal)" stroke-width="1.5"/>
+          <circle cx="20" cy="20" r="2" fill="var(--teal)"/><circle cx="26" cy="16" r="2" fill="var(--teal)"/><circle cx="32" cy="20" r="2" fill="var(--teal)"/>
+          <circle cx="26" cy="30" r="2" fill="var(--teal)"/>
+          <line x1="20" y1="20" x2="26" y2="16" stroke="var(--teal)" stroke-width="1"/><line x1="26" y1="16" x2="32" y2="20" stroke="var(--teal)" stroke-width="1"/>
+          <line x1="26" y1="30" x2="20" y2="20" stroke="var(--teal)" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="loginEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="loginPass" type="password" placeholder="Your password">
+      <div class="form-error" id="loginErr" style="display:block;opacity:0">Invalid email or password</div>
+    </div>
+    <button class="btn btn-teal" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div style="text-align:center;margin-top:1rem">
+      <span style="font-size:.78rem;color:var(--text-dim)">Don't have an account? </span>
+      <span style="font-size:.78rem;color:var(--teal);font-weight:700;cursor:pointer" onclick="nav('screenRegister')">Create one</span>
+    </div>
+    <div style="margin-top:1.5rem;background:var(--teal-pale);border-radius:10px;padding:1rem;font-size:.78rem;color:var(--text-mid)">
+      <strong>Demo account:</strong><br>Email: demo@bizny.africa<br>Password: bizny123
+    </div>
+  </div>
+</div>
+
+
+<div class="screen" id="screenHome">
+  <div class="status-bar"><span id="clockH">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <div class="header-logo">
+        <div class="logo-circle">
+          <svg width="20" height="20" viewBox="0 0 52 52" fill="none">
+            <path d="M26 10C18 10 13 15 13 21c0 4 2 7 5 9-2 2-3 5-2 8 1 3 4 5 7 5h6c3 0 6-2 7-5 1-3 0-6-2-8 3-2 5-5 5-9 0-6-5-11-13-11z" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.8)" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="2" fill="white"/><circle cx="26" cy="16" r="2" fill="white"/><circle cx="32" cy="20" r="2" fill="white"/><circle cx="26" cy="30" r="2" fill="white"/>
+            <line x1="20" y1="20" x2="26" y2="16" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="26" y1="16" x2="32" y2="20" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+            <line x1="26" y1="30" x2="20" y2="20" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="26" y1="30" x2="32" y2="20" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="header-brand">BIZNY</span>
+      </div>
+      <div style="display:flex;gap:.6rem">
+        <div class="notif-wrap">
+          <button class="icon-btn" onclick="nav('screenNotif')"><svg width="18" height="18" color="white"><use href="#g-bell"/></svg></button>
+          <div class="notif-badge" id="notifBadge">3</div>
+        </div>
+        <button class="icon-btn" onclick="nav('screenProfile')"><svg width="18" height="18" color="white"><use href="#g-user"/></svg></button>
+      </div>
+    </div>
+    <div style="font-size:.75rem;opacity:.7">Good evening,</div>
+    <div style="font-size:1.05rem;font-weight:700" id="homeGreeting">Loading...</div>
+    <div class="search-bar">
+      <svg width="16" height="16" color="rgba(255,255,255,.6)"><use href="#g-search"/></svg>
+      <input type="text" placeholder="Search projects, opportunities..." id="homeSearch" oninput="searchProjects(this.value)">
+    </div>
+  </div>
+  <div class="scroll-content">
+    <div class="stats-row" style="margin-top:.2rem" id="homeStats">
+      <div class="stat-card"><div class="stat-num" id="statProjects">0</div><div class="stat-lbl">Projects</div></div>
+      <div class="stat-card"><div class="stat-num" id="statRaised">₦0</div><div class="stat-lbl">Raised</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPartners">0</div><div class="stat-lbl">Partners</div></div>
+    </div>
+
+    <div class="ai-banner">
+      <div class="ai-icon"><svg width="32" height="32" color="rgba(255,255,255,.9)"><use href="#g-cpu"/></svg></div>
+      <div class="ai-text">
+        <h4>AI Co-Pilot Active</h4>
+        <p id="aiBannerText">Ready to help with your projects</p>
+      </div>
+      <button class="ai-cta" onclick="nav('screenAI')">Open →</button>
+    </div>
+
+    <div class="pills">
+      <div class="pill active" onclick="filterCategory('All',this)">All</div>
+      <div class="pill" onclick="filterCategory('Agriculture',this)">Agriculture</div>
+      <div class="pill" onclick="filterCategory('Manufacturing',this)">Manufacturing</div>
+      <div class="pill" onclick="filterCategory('Export',this)">Export</div>
+      <div class="pill" onclick="filterCategory('Energy',this)">Energy</div>
+      <div class="pill" onclick="filterCategory('Tech',this)">Tech</div>
+      <div class="pill" onclick="filterCategory('Food',this)">Food</div>
+    </div>
+
+    <div class="sec-hd">
+      <div class="sec-title">Active Projects</div>
+      <button class="sec-link" onclick="nav('screenProjects')">See all →</button>
+    </div>
+    <div id="homeProjectsList"></div>
+
+    <div class="divider"></div>
+    <div class="sec-hd">
+      <div class="sec-title">Open Opportunities</div>
+      <button class="sec-link" onclick="nav('screenMarket')">See all →</button>
+    </div>
+    <div class="h-scroll" id="homeOpps"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="nav('screenHome')">
+      <div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-home"/></svg></div>
+      <div class="nav-label">Home</div><div class="nav-dot"></div>
+    </button>
+    <button class="nav-item" onclick="nav('screenProjects')">
+      <div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div>
+      <div class="nav-label">Projects</div>
+    </button>
+    <button class="nav-item" onclick="nav('screenDealDesk')">
+      <div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div>
+      <div class="nav-label">DealDesk</div>
+    </button>
+    <button class="nav-item" onclick="nav('screenAI')">
+      <div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div>
+      <div class="nav-label">AI Pilot</div>
+    </button>
+    <button class="nav-item" onclick="nav('screenProfile')">
+      <div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div>
+      <div class="nav-label">Profile</div>
+    </button>
+  </div>
+  <button class="fab" onclick="openNewProject()"><svg width="22" height="22" color="white"><use href="#g-plus"/></svg></button>
+</div>
+
+
+<div class="screen" id="screenProjects">
+  <div class="status-bar"><span id="clockP">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Project Center</span>
+      <button class="icon-btn" onclick="openNewProject()"><svg width="18" height="18" color="white"><use href="#g-plus"/></svg></button>
+    </div>
+    <div class="header-sub">Build. Collaborate. Execute.</div>
+  </div>
+  <div class="scroll-content">
+    <div class="pills">
+      <div class="pill active" onclick="filterProjects('all',this)">All</div>
+      <div class="pill" onclick="filterProjects('mine',this)">My Projects</div>
+      <div class="pill" onclick="filterProjects('active',this)">Active</div>
+      <div class="pill" onclick="filterProjects('funding',this)">Seeking Funds</div>
+      <div class="pill" onclick="filterProjects('planning',this)">Planning</div>
+    </div>
+    <div id="projectsList"></div>
+    <div style="background:var(--teal-dark);border-radius:14px;padding:1.2rem;text-align:center;color:white;cursor:pointer;margin-top:.5rem;display:flex;flex-direction:column;align-items:center;gap:.4rem" onclick="openNewProject()">
+      <svg width="28" height="28" color="rgba(255,255,255,.8)"><use href="#g-plus"/></svg>
+      <div style="font-weight:800;font-size:.93rem">Start a New Project</div>
+      <div style="font-size:.72rem;opacity:.65">Choose from 40+ industrial templates</div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item active" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div><div class="nav-dot"></div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+  <button class="fab" onclick="openNewProject()"><svg width="22" height="22" color="white"><use href="#g-plus"/></svg></button>
+</div>
+
+
+<div class="screen" id="screenProjectDetail">
+  <div class="status-bar"><span id="clockPD">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header" id="pdHeader">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenProjects')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title" id="pdTitle">Project</span>
+      <button class="icon-btn" onclick="shareProject()"><svg width="18" height="18" color="white"><use href="#g-share"/></svg></button>
+    </div>
+  </div>
+  <div class="scroll-content" id="pdContent"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item active" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div><div class="nav-dot"></div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenDealDesk">
+  <div class="status-bar"><span id="clockDD">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">DealDesk</span>
+      <button class="icon-btn"><svg width="18" height="18" color="white"><use href="#g-settings"/></svg></button>
+    </div>
+    <div class="header-sub">Capital Engine · Structured Investments</div>
+  </div>
+  <div class="scroll-content">
+    <div class="stats-row" style="margin-top:.2rem">
+      <div class="stat-card"><div class="stat-num" id="ddTotal">₦0</div><div class="stat-lbl">Total Raised</div></div>
+      <div class="stat-card"><div class="stat-num" id="ddDeals">0</div><div class="stat-lbl">Active Deals</div></div>
+      <div class="stat-card"><div class="stat-num">92%</div><div class="stat-lbl">Success Rate</div></div>
+    </div>
+    <div class="sec-hd" style="margin-top:.3rem">
+      <div class="sec-title">Open Investment Rounds</div>
+    </div>
+    <div id="dealsList"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item active" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div><div class="nav-dot"></div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenMarket">
+  <div class="status-bar"><span id="clockMK">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Marketplace</span>
+      <button class="icon-btn"><svg width="18" height="18" color="white"><use href="#g-search"/></svg></button>
+    </div>
+    <div class="header-sub">Industrial Opportunities Across Africa</div>
+  </div>
+  <div class="scroll-content">
+    <div class="pills">
+      <div class="pill active">All</div>
+      <div class="pill">Join Team</div>
+      <div class="pill">Co-Found</div>
+      <div class="pill">Invest</div>
+      <div class="pill">Supply</div>
+    </div>
+    <div id="marketList"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenAI">
+  <div class="status-bar"><span id="clockAI">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">AI Co-Pilot</span>
+      <button class="icon-btn" onclick="clearChat()"><svg width="18" height="18" color="white"><use href="#g-trash"/></svg></button>
+    </div>
+    <div style="display:flex;align-items:center;font-size:.75rem;color:rgba(255,255,255,.7);margin-top:.3rem">
+      <span class="live-dot"></span>Industrial Intelligence · Always On
+    </div>
+  </div>
+  <div class="scroll-content" style="display:flex;flex-direction:column;padding-bottom:130px">
+    <div style="margin-bottom:1rem">
+      <div style="font-size:.78rem;font-weight:700;color:var(--text-mid);margin-bottom:.7rem">Quick Actions</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+        <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;cursor:pointer" onclick="aiQuick('draft')">
+          <div style="display:flex;justify-content:center;margin-bottom:.35rem"><svg width="26" height="26" color="var(--teal)"><use href="#g-doc"/></svg></div>
+          <div style="font-size:.75rem;font-weight:700">Draft Agreement</div>
+          <div style="font-size:.62rem;color:var(--text-dim);margin-top:.15rem">Partnership docs</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;cursor:pointer" onclick="aiQuick('match')">
+          <div style="display:flex;justify-content:center;margin-bottom:.35rem"><svg width="26" height="26" color="var(--teal)"><use href="#g-link"/></svg></div>
+          <div style="font-size:.75rem;font-weight:700">Match Investors</div>
+          <div style="font-size:.62rem;color:var(--text-dim);margin-top:.15rem">Find aligned capital</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;cursor:pointer" onclick="aiQuick('feasibility')">
+          <div style="display:flex;justify-content:center;margin-bottom:.35rem"><svg width="26" height="26" color="var(--teal)"><use href="#g-chart"/></svg></div>
+          <div style="font-size:.75rem;font-weight:700">Feasibility Report</div>
+          <div style="font-size:.62rem;color:var(--text-dim);margin-top:.15rem">Financial modelling</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;cursor:pointer" onclick="aiQuick('compliance')">
+          <div style="display:flex;justify-content:center;margin-bottom:.35rem"><svg width="26" height="26" color="var(--teal)"><use href="#g-check"/></svg></div>
+          <div style="font-size:.75rem;font-weight:700">Check Compliance</div>
+          <div style="font-size:.62rem;color:var(--text-dim);margin-top:.15rem">Licenses & risks</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider" style="margin:0 -1.2rem .8rem"></div>
+    <div class="chat-wrap" id="chatMessages">
+      <div class="chat-msg bot">Hello! I'm your Bizny AI Co-Pilot — your industrial coordination intelligence. I can help you draft agreements, find investors, generate feasibility reports, check compliance, and much more. What would you like to work on?</div>
+    </div>
+    <div class="chat-input-row" style="position:fixed;bottom:75px;left:50%;transform:translateX(-50%);width:calc(100% - 2.4rem);max-width:390px;z-index:50">
+      <input type="text" id="chatInput" placeholder="Ask AI Co-Pilot anything..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()"><svg width="16" height="16" color="white"><use href="#g-send"/></svg></button>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item active" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div><div class="nav-dot"></div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenProfile">
+  <div class="status-bar"><span id="clockPR">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="profile-hd">
+    <button onclick="nav('screenHome')" style="position:absolute;top:1rem;left:1rem;background:rgba(255,255,255,.15);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" color="white"><use href="#g-back"/></svg></button>
+    <button onclick="openEditProfile()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" color="white"><use href="#g-edit"/></svg></button>
+    <div class="avatar" id="profileAvatar">?</div>
+    <div class="profile-name" id="profileName">Loading...</div>
+    <div class="profile-role" id="profileRole">Member</div>
+  </div>
+  <div class="profile-stats">
+    <div class="ps-item"><div class="ps-num" id="prjCount">0</div><div class="ps-lbl">Projects</div></div>
+    <div class="ps-item"><div class="ps-num" id="prjRaised">₦0</div><div class="ps-lbl">Raised</div></div>
+    <div class="ps-item"><div class="ps-num" id="prjPartners">0</div><div class="ps-lbl">Network</div></div>
+    <div class="ps-item"><div class="ps-num" id="prjScore">85</div><div class="ps-lbl">Score</div></div>
+  </div>
+  <div style="padding:0 1.2rem;margin-bottom:1rem" id="profileTags"></div>
+  <div>
+    <div class="menu-item" onclick="nav('screenProjects')">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-folder"/></svg></span>
+      <span class="menu-label">My Projects</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="nav('screenDealDesk')">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-trending"/></svg></span>
+      <span class="menu-label">Investment Portfolio</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="nav('screenMarket')">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-globe"/></svg></span>
+      <span class="menu-label">Marketplace</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="nav('screenNotif')">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-bell"/></svg></span>
+      <span class="menu-label">Notifications</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="nav('screenTemplates')">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-clipboard"/></svg></span>
+      <span class="menu-label">Templates Library</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="openSettings()">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-settings"/></svg></span>
+      <span class="menu-label">Settings</span><span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="doLogout()" style="color:var(--red)">
+      <span class="menu-icon"><svg width="20" height="20" color="var(--red)"><use href="#g-logout"/></svg></span>
+      <span class="menu-label" style="color:var(--red)">Sign Out</span><span class="menu-arrow" style="color:var(--red)">›</span>
+    </div>
+  </div>
+  <div style="height:90px"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item active" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div><div class="nav-dot"></div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenNotif">
+  <div class="status-bar"><span id="clockN">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Notifications</span>
+      <button class="sec-link" style="color:rgba(255,255,255,.7);font-size:.75rem" onclick="clearNotifs()">Clear all</button>
+    </div>
+  </div>
+  <div class="scroll-content" id="notifList"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+
+<div class="screen" id="screenTemplates">
+  <div class="status-bar"><span id="clockTL">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenProfile')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Templates Library</span>
+      <div style="width:34px"></div>
+    </div>
+    <div class="header-sub">40+ Industrial Blueprints</div>
+  </div>
+  <div class="scroll-content">
+    <div class="pills">
+      <div class="pill active">All</div>
+      <div class="pill">Agriculture</div>
+      <div class="pill">Manufacturing</div>
+      <div class="pill">Export</div>
+      <div class="pill">Energy</div>
+    </div>
+    <div id="templatesList"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenDealDesk')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-briefcase"/></svg></div><div class="nav-label">DealDesk</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+
+function glyph(id, size=18, color='var(--teal)') {
+  return `<svg width="${size}" height="${size}" color="${color}" style="display:block;flex-shrink:0"><use href="#${id}"/></svg>`;
+}
+
+// Category to glyph map
+const CAT_GLYPHS = {
+  'Agriculture': 'g-leaf',
+  'Manufacturing': 'g-factory',
+  'Export': 'g-ship',
+  'Energy': 'g-zap',
+  'Tech': 'g-monitor',
+  'Food': 'g-food',
+  'Healthcare': 'g-health',
+  'Construction': 'g-building',
+  'Finance': 'g-trending',
+  'default': 'g-folder'
+};
+
+// Project title to specific glyph
+const TITLE_GLYPHS = {
+  'Palm Oil': 'g-droplet',
+  'Soy': 'g-milk',
+  'Milk': 'g-milk',
+  'Insect': 'g-bug',
+  'Mango': 'g-fruit',
+  'Solar': 'g-sun',
+  'Cassava': 'g-grain',
+  'Tomato': 'g-jar',
+  'Fish': 'g-fish',
+  'Textile': 'g-textile',
+  'Housing': 'g-building',
+  'Moringa': 'g-plant',
+  'Biomass': 'g-flame',
+};
+
+function getProjectGlyph(title, category) {
+  for (const [key, g] of Object.entries(TITLE_GLYPHS)) {
+    if (title.includes(key)) return g;
+  }
+  return CAT_GLYPHS[category] || CAT_GLYPHS.default;
+}
+
+// Notification type glyphs
+const NOTIF_GLYPHS = {
+  'welcome': 'g-celebrate',
+  'match': 'g-cpu',
+  'investment': 'g-dollar',
+  'project': 'g-folder',
+  'team': 'g-team',
+  'default': 'g-bell'
+};
+
+
+let db;
+const DB_NAME = 'BiznyDB', DB_VER = 1;
+
+function initDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains('users')) {
+        const u = db.createObjectStore('users', {keyPath:'id', autoIncrement:true});
+        u.createIndex('email','email',{unique:true});
+      }
+      if (!db.objectStoreNames.contains('projects')) {
+        const p = db.createObjectStore('projects', {keyPath:'id', autoIncrement:true});
+        p.createIndex('userId','userId');
+        p.createIndex('status','status');
+        p.createIndex('category','category');
+      }
+      if (!db.objectStoreNames.contains('investments')) {
+        const i = db.createObjectStore('investments', {keyPath:'id', autoIncrement:true});
+        i.createIndex('investorId','investorId');
+        i.createIndex('projectId','projectId');
+      }
+      if (!db.objectStoreNames.contains('notifications')) {
+        const n = db.createObjectStore('notifications', {keyPath:'id', autoIncrement:true});
+        n.createIndex('userId','userId');
+      }
+      if (!db.objectStoreNames.contains('chats')) {
+        const c = db.createObjectStore('chats', {keyPath:'id', autoIncrement:true});
+        c.createIndex('userId','userId');
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(); };
+    req.onerror = e => reject(e);
+  });
+}
+
+function dbAdd(store, data) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).add(data);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbPut(store, data) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(data);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGet(store, key) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).get(key);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGetAll(store) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGetByIndex(store, index, val) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).index(index).getAll(val);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbDelete(store, key) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(key);
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+}
+
+
+let currentUser = null;
+const SESSION_KEY = 'bizny_session';
+
+function hashPass(p) {
+  let h = 0;
+  for (let i = 0; i < p.length; i++) h = ((h << 5) - h) + p.charCodeAt(i), h |= 0;
+  return 'h_' + Math.abs(h).toString(36) + p.length;
+}
+
+async function register(name, email, phone, pass, roles, country, city, sector) {
+  const existing = await dbGetByIndex('users', 'email', email.toLowerCase());
+  if (existing.length) throw new Error('Email already registered');
+  const user = { name, email: email.toLowerCase(), phone, passwordHash: hashPass(pass), roles, country, city, sector, createdAt: Date.now(), score: 75, verified: false };
+  const id = await dbAdd('users', user);
+  user.id = id;
+  await dbAdd('notifications', { userId: id, type: 'welcome', title: 'Welcome to Bizny!', body: "Your account is set up. Start your first project or explore opportunities.", time: Date.now(), read: false });
+  return user;
+}
+
+async function login(email, pass) {
+  if (email.toLowerCase() === 'demo@bizny.africa' && pass === 'bizny123') {
+    let demos = await dbGetByIndex('users', 'email', 'demo@bizny.africa');
+    if (!demos.length) {
+      await register('Chukwuemeka Okafor', 'demo@bizny.africa', '+234 800 000 0001', 'bizny123', ['Founder','Manufacturer','Exporter'], 'Nigeria', 'Lagos', 'Agriculture & Agro-processing');
+      demos = await dbGetByIndex('users', 'email', 'demo@bizny.africa');
+      await seedDemoData(demos[0].id);
+    }
+    return demos[0];
+  }
+  const users = await dbGetByIndex('users', 'email', email.toLowerCase());
+  if (!users.length) throw new Error('Account not found');
+  const user = users[0];
+  if (user.passwordHash !== hashPass(pass)) throw new Error('Wrong password');
+  return user;
+}
+
+function saveSession(user) { localStorage.setItem(SESSION_KEY, JSON.stringify({id: user.id, ts: Date.now()})); currentUser = user; }
+async function loadSession() {
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (!raw) return false;
+  try { const {id} = JSON.parse(raw); const user = await dbGet('users', id); if (!user) return false; currentUser = user; return true; } catch { return false; }
+}
+function clearSession() { localStorage.removeItem(SESSION_KEY); currentUser = null; }
+
+
+async function seedDemoData(userId) {
+  const projects = [
+    { userId, title: 'Palm Oil Export — Akwa Ibom', glyphId: 'g-droplet', category: 'Agriculture', location: 'Akwa Ibom, Nigeria', status: 'active', raised: 48000000, target: 63000000, partners: 4, description: 'Structured palm oil export business leveraging Akwa Ibom\'s abundant supply to EU markets. Full supply chain from farm to port.', milestones: [{title:'Land Acquisition',done:true},{title:'Equipment Procurement',done:true},{title:'Processing Plant Setup',done:true},{title:'First Harvest',done:false},{title:'Export Certification',done:false},{title:'EU Buyer Contract',done:false},{title:'First Shipment',done:false},{title:'Revenue Distribution',done:false}], roiPct: 22, riskLevel: 'Low', timeline: '18 months', sector: 'Agriculture & Export', createdAt: Date.now() - 86400000*30 },
+    { userId, title: 'NOVA MILK — Soy Production', glyphId: 'g-milk', category: 'Food', location: 'Lagos, Nigeria', status: 'funding', raised: 12000000, target: 32000000, partners: 2, description: 'Plant-based soy milk production plant targeting the growing health-conscious Nigerian consumer market. NAFDAC certified process.', milestones: [{title:'Business Registration',done:true},{title:'Factory Space Secured',done:false},{title:'Equipment Import',done:false},{title:'NAFDAC Certification',done:false},{title:'Production Launch',done:false},{title:'Distribution Network',done:false}], roiPct: 28, riskLevel: 'Medium', timeline: '24 months', sector: 'Food & Beverage', createdAt: Date.now() - 86400000*15 },
+    { userId, title: 'Insect Protein Farm', glyphId: 'g-bug', category: 'Agriculture', location: 'Lagos, Nigeria', status: 'planning', raised: 0, target: 15000000, partners: 3, description: 'Sustainable insect protein farm producing black soldier fly larvae for animal feed. Circular economy model using organic waste.', milestones: [{title:'Template Selected',done:true},{title:'Location Scouting',done:false},{title:'Regulatory Approval',done:false},{title:'Equipment Setup',done:false},{title:'First Harvest',done:false}], roiPct: 35, riskLevel: 'High', timeline: '30 months', sector: 'Agriculture', createdAt: Date.now() - 86400000*5 }
+  ];
+  for (const p of projects) await dbAdd('projects', p);
+
+  const notifs = [
+    {userId, type:'match', title:'AI found 3 investor matches', body:'For your Palm Oil Export project', time: Date.now()-7200000, read:false},
+    {userId, type:'investment', title:'₦5M investment received', body:'Palm Oil Export via DealDesk', time: Date.now()-18000000, read:false},
+    {userId, type:'team', title:'Amaka Eze wants to join', body:'Insect Protein Farm · Engineer role', time: Date.now()-86400000, read:false}
+  ];
+  for (const n of notifs) await dbAdd('notifications', n);
+}
+
+
+function nav(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById(screenId);
+  if (t) { t.classList.add('active'); t.scrollTop = 0; }
+  const loaders = { screenHome: loadHome, screenProjects: loadProjects, screenDealDesk: loadDealDesk, screenProfile: loadProfile, screenNotif: loadNotif, screenTemplates: loadTemplates, screenMarket: loadMarket, screenAI: loadAI };
+  if (loaders[screenId]) loaders[screenId]();
+}
+
+
+function updateClock() {
+  const d = new Date(); let h = d.getHours(), m = d.getMinutes();
+  const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+  const t = h + ':' + String(m).padStart(2,'0') + ' ' + ap;
+  document.querySelectorAll('[id^="clock"]').forEach(el => el.textContent = t);
+}
+updateClock(); setInterval(updateClock, 10000);
+
+function toast(msg, type='') {
+  const t = document.getElementById('toast'); t.textContent = msg; t.className = type; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function openModal(html) { document.getElementById('modalContent').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+
+let regData = {};
+let selectedRoles = [];
+
+function regStep1() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  let ok = true;
+  if (!name) { showErr('errName'); ok = false; } else hideErr('errName');
+  if (!email || !email.includes('@')) { showErr('errEmail'); ok = false; } else hideErr('errEmail');
+  if (pass.length < 6) { showErr('errPass'); ok = false; } else hideErr('errPass');
+  if (!ok) return;
+  regData = {name, email, phone: document.getElementById('regPhone').value, pass};
+  document.getElementById('regStep1').classList.remove('active');
+  document.getElementById('regStep2').classList.add('active');
+}
+function toggleRole(el) {
+  el.classList.toggle('selected'); const role = el.dataset.role;
+  if (el.classList.contains('selected')) { if (!selectedRoles.includes(role)) selectedRoles.push(role); }
+  else selectedRoles = selectedRoles.filter(r => r !== role);
+}
+function regStep2() {
+  if (!selectedRoles.length) { document.getElementById('errRole').style.opacity='1'; return; }
+  document.getElementById('errRole').style.opacity='0'; regData.roles = selectedRoles;
+  document.getElementById('regStep2').classList.remove('active'); document.getElementById('regStep3').classList.add('active');
+}
+async function completeReg() {
+  const country = document.getElementById('regCountry').value;
+  const city = document.getElementById('regCity').value.trim();
+  const sector = document.getElementById('regSector').value;
+  const btn = document.getElementById('regFinalBtn');
+  btn.innerHTML = '<span class="loader"></span>Creating account...'; btn.disabled = true;
+  try {
+    const user = await register(regData.name, regData.email, regData.phone, regData.pass, regData.roles, country, city, sector);
+    saveSession(user); toast('Account created! Welcome to Bizny', 'success');
+    setTimeout(() => nav('screenHome'), 800);
+  } catch(e) { btn.innerHTML = 'Create My Account'; btn.disabled = false; toast(e.message, 'error'); }
+}
+function showErr(id) { const e = document.getElementById(id); if(e){e.style.display='block';} }
+function hideErr(id) { const e = document.getElementById(id); if(e){e.style.display='none';} }
+
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const btn = document.getElementById('loginBtn'); const err = document.getElementById('loginErr');
+  if (!email || !pass) { err.style.opacity='1'; err.textContent='Please fill in all fields'; return; }
+  btn.innerHTML = '<span class="loader"></span>Signing in...'; btn.disabled = true;
+  try {
+    const user = await login(email, pass); saveSession(user);
+    const projects = await dbGetByIndex('projects', 'userId', user.id);
+    if (!projects.length && email === 'demo@bizny.africa') await seedDemoData(user.id);
+    toast('Welcome back, ' + user.name.split(' ')[0] + '!', 'success');
+    setTimeout(() => nav('screenHome'), 600);
+  } catch(e) { btn.innerHTML = 'Sign In'; btn.disabled = false; err.style.opacity='1'; err.textContent = e.message; }
+}
+
+
+async function loadHome() {
+  if (!currentUser) return;
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  document.getElementById('homeGreeting').textContent = 'Good ' + greet + ', ' + currentUser.name.split(' ')[0];
+  const projects = await dbGetByIndex('projects', 'userId', currentUser.id);
+  const allProjects = await dbGetAll('projects');
+  document.getElementById('statProjects').textContent = projects.length;
+  document.getElementById('statRaised').textContent = formatMoney(projects.reduce((s,p)=>s+p.raised,0));
+  document.getElementById('statPartners').textContent = projects.reduce((s,p)=>s+p.partners,0);
+  const notifs = await dbGetByIndex('notifications', 'userId', currentUser.id);
+  const unread = notifs.filter(n => !n.read);
+  document.getElementById('aiBannerText').textContent = unread.length ? unread.length + ' new updates need your attention' : 'Ready to help grow your projects';
+  document.getElementById('notifBadge').textContent = unread.length || '';
+  document.getElementById('notifBadge').style.display = unread.length ? 'flex' : 'none';
+  const showProjects = [...projects, ...allProjects.filter(p => p.userId !== currentUser.id)].slice(0,4);
+  document.getElementById('homeProjectsList').innerHTML = showProjects.length ? showProjects.map(p => projectCardHTML(p)).join('') : '<div class="empty"><div class="empty-icon">' + glyph('g-folder',36,'var(--text-dim)') + '</div><h3>No projects yet</h3><p>Tap + to create your first project</p></div>';
+  const opps = allProjects.filter(p => p.status==='funding'||p.status==='planning');
+  document.getElementById('homeOpps').innerHTML = opps.length
+    ? opps.map(p => `<div class="opp-card" onclick="openProjectDetail(${p.id})"><div class="opp-icon">${glyph(p.glyphId||getProjectGlyph(p.title,p.category),22,'var(--teal)')}</div><div class="opp-title">${p.title}</div><div class="opp-sub">${p.location}</div><div class="opp-tag">${p.status==='funding'?'Invest':'Join Team'}</div></div>`).join('')
+    : '<div style="color:var(--text-dim);font-size:.82rem;padding:1rem">No opportunities yet</div>';
+}
+
+function filterCategory(cat, el) {
+  document.querySelectorAll('#screenHome .pills .pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active'); loadHomeFiltered(cat);
+}
+async function loadHomeFiltered(cat) {
+  const projects = await dbGetAll('projects');
+  const filtered = cat==='All' ? projects : projects.filter(p=>p.category===cat);
+  document.getElementById('homeProjectsList').innerHTML = filtered.length ? filtered.slice(0,4).map(p=>projectCardHTML(p)).join('') : '<div class="empty"><div class="empty-icon">' + glyph('g-search',36,'var(--text-dim)') + '</div><h3>No projects in this category</h3></div>';
+}
+async function searchProjects(q) {
+  if (!q.trim()) { loadHome(); return; }
+  const all = await dbGetAll('projects');
+  const filtered = all.filter(p => p.title.toLowerCase().includes(q.toLowerCase())||p.location.toLowerCase().includes(q.toLowerCase())||p.category.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('homeProjectsList').innerHTML = filtered.length ? filtered.map(p=>projectCardHTML(p)).join('') : '<div class="empty"><div class="empty-icon">' + glyph('g-search',36,'var(--text-dim)') + '</div><h3>No results for "'+q+'"</h3></div>';
+}
+
+
+async function loadProjects(filter='all') {
+  const all = await dbGetAll('projects');
+  let projects = all;
+  if (filter==='mine') projects = all.filter(p=>p.userId===currentUser.id);
+  else if (filter==='active') projects = all.filter(p=>p.status==='active');
+  else if (filter==='funding') projects = all.filter(p=>p.status==='funding');
+  else if (filter==='planning') projects = all.filter(p=>p.status==='planning');
+  document.getElementById('projectsList').innerHTML = projects.length ? projects.map(p=>projectCardHTML(p)).join('') : '<div class="empty"><div class="empty-icon">' + glyph('g-folder',36,'var(--text-dim)') + '</div><h3>No projects here</h3><p>Start one using a template!</p></div>';
+}
+function filterProjects(f,el) {
+  document.querySelectorAll('#screenProjects .pills .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active'); loadProjects(f);
+}
+
+function projectCardHTML(p) {
+  const pct = p.target>0 ? Math.round((p.raised/p.target)*100) : 0;
+  const badgeClass = p.status==='active'?'badge-active':p.status==='funding'?'badge-funding':'badge-new';
+  const badgeText = p.status==='active'?'Active':p.status==='funding'?'Seeking Funds':'Planning';
+  const doneMs = p.milestones?p.milestones.filter(m=>m.done).length:0;
+  const totalMs = p.milestones?p.milestones.length:0;
+  const glyphId = p.glyphId || getProjectGlyph(p.title, p.category);
+  return `<div class="card" onclick="openProjectDetail(${p.id})">
+    <div class="pc-top">
+      <div class="pc-icon">${glyph(glyphId,22,'var(--teal)')}</div>
+      <div class="pc-info"><div class="pc-name">${p.title}</div><div class="pc-loc">${glyph('g-pin',12,'var(--text-dim)')} ${p.location}</div></div>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-labels"><span>${formatMoney(p.raised)} raised</span><span style="color:var(--teal);font-weight:700">${pct}%</span></div>
+      <div class="progress-track"><div class="progress-fill${p.status==='funding'?' gold':''}" style="width:${pct}%"></div></div>
+    </div>
+    <div class="pc-foot">
+      <div class="pc-meta">Target: <strong>${formatMoney(p.target)}</strong> · ${p.partners} partners · ${doneMs}/${totalMs} milestones</div>
+      <div style="font-size:.72rem;color:var(--teal);font-weight:700">View →</div>
+    </div>
+  </div>`;
+}
+
+async function openProjectDetail(id) {
+  const p = await dbGet('projects', id);
+  if (!p) return;
+  const pct = p.target>0 ? Math.round((p.raised/p.target)*100) : 0;
+  document.getElementById('pdTitle').textContent = p.title;
+  const isOwner = p.userId === currentUser.id;
+  const glyphId = p.glyphId || getProjectGlyph(p.title, p.category);
+  const milestones = (p.milestones||[]).map((m,i) => `
+    <div class="milestone">
+      <div class="m-dot ${m.done?'done':i===(p.milestones.filter(x=>x.done).length)?'active':'pending'}">${m.done?'✓':i+1}</div>
+      <div class="m-text"><div class="m-title">${m.title}</div><div class="m-sub">${m.done?'Completed':'Pending'}</div></div>
+    </div>`).join('');
+  document.getElementById('pdContent').innerHTML = `
+    <div style="background:var(--teal-dark);padding:1.2rem;color:white">
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem">
+        <div style="background:rgba(255,255,255,.15);border-radius:10px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${glyph(glyphId,26,'rgba(255,255,255,.9)')}</div>
+        <div><div style="font-size:1.1rem;font-weight:800">${p.title}</div><div style="font-size:.75rem;opacity:.7;margin-top:.2rem;display:flex;align-items:center;gap:.3rem">${glyph('g-pin',12,'rgba(255,255,255,.6)')} ${p.location}</div></div>
+      </div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <span style="background:rgba(255,255,255,.15);padding:.25rem .7rem;border-radius:20px;font-size:.7rem;font-weight:600">${p.sector}</span>
+        <span style="background:rgba(255,255,255,.15);padding:.25rem .7rem;border-radius:20px;font-size:.7rem;font-weight:600">${p.riskLevel} Risk</span>
+        <span style="background:rgba(255,255,255,.15);padding:.25rem .7rem;border-radius:20px;font-size:.7rem;font-weight:600">${p.timeline}</span>
+      </div>
+    </div>
+    <div style="padding:1.2rem">
+      <div class="card-flat" style="margin-bottom:1rem">
+        <div style="font-size:.78rem;font-weight:700;color:var(--text-mid);margin-bottom:.7rem">FUNDING PROGRESS</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+          <span style="font-size:1.2rem;font-weight:900;color:var(--teal)">${formatMoney(p.raised)}</span>
+          <span style="font-size:.8rem;color:var(--text-dim);font-weight:700">of ${formatMoney(p.target)}</span>
+        </div>
+        <div class="progress-track" style="height:8px;margin-bottom:.7rem"><div class="progress-fill" style="width:${pct}%;height:100%"></div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;text-align:center">
+          <div style="background:var(--surface);border-radius:8px;padding:.6rem"><div style="font-size:1rem;font-weight:900;color:var(--teal)">${pct}%</div><div style="font-size:.6rem;color:var(--text-dim);text-transform:uppercase">Funded</div></div>
+          <div style="background:var(--surface);border-radius:8px;padding:.6rem"><div style="font-size:1rem;font-weight:900;color:var(--teal)">${p.roiPct}%</div><div style="font-size:.6rem;color:var(--text-dim);text-transform:uppercase">Est. ROI</div></div>
+          <div style="background:var(--surface);border-radius:8px;padding:.6rem"><div style="font-size:1rem;font-weight:900;color:var(--teal)">${p.partners}</div><div style="font-size:.6rem;color:var(--text-dim);text-transform:uppercase">Partners</div></div>
+        </div>
+      </div>
+      <div class="card-flat" style="margin-bottom:1rem">
+        <div style="font-size:.78rem;font-weight:700;color:var(--text-mid);margin-bottom:.6rem">ABOUT</div>
+        <div style="font-size:.83rem;line-height:1.65;color:var(--text)">${p.description}</div>
+      </div>
+      <div class="card-flat" style="margin-bottom:1rem">
+        <div style="font-size:.78rem;font-weight:700;color:var(--text-mid);margin-bottom:.6rem">MILESTONES (${(p.milestones||[]).filter(m=>m.done).length}/${(p.milestones||[]).length})</div>
+        ${milestones}
+      </div>
+      ${isOwner ? `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem">
+        <button class="btn btn-outline btn-sm" style="width:100%;padding:.75rem" onclick="openEditProjectModal(${p.id})">Edit Project</button>
+        <button class="btn btn-teal btn-sm" style="width:100%;padding:.75rem" onclick="openInvestModal(${p.id})">Share Deal</button>
+      </div>` : `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem">
+        <button class="btn btn-outline btn-sm" style="width:100%;padding:.75rem" onclick="joinProject(${p.id})">Join Team</button>
+        <button class="btn btn-teal btn-sm" style="width:100%;padding:.75rem" onclick="openInvestModal(${p.id})">Invest Now</button>
+      </div>`}
+    </div>`;
+  nav('screenProjectDetail');
+}
+
+
+function openNewProject() {
+  openModal(`
+    <div class="modal-title">Start New Project</div>
+    <div class="form-group"><label class="form-label">Project Name</label><input class="form-input" id="npName" placeholder="e.g. Cassava Processing Plant"></div>
+    <div class="form-group"><label class="form-label">Category</label>
+      <select class="form-input form-select" id="npCat">
+        <option>Agriculture</option><option>Manufacturing</option><option>Export</option>
+        <option>Energy</option><option>Tech</option><option>Food</option><option>Healthcare</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="npLoc" placeholder="e.g. Onitsha, Anambra"></div>
+    <div class="form-group"><label class="form-label">Target Capital (₦)</label><input class="form-input" id="npTarget" type="number" placeholder="e.g. 25000000"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-input form-textarea" id="npDesc" placeholder="Describe your project, its goals and impact..."></textarea></div>
+    <div class="form-group"><label class="form-label">Sector</label>
+      <select class="form-input form-select" id="npSector">
+        <option>Agriculture & Agro-processing</option><option>Food & Beverage</option>
+        <option>Manufacturing</option><option>Export & Trade</option><option>Energy</option>
+        <option>Technology</option><option>Healthcare</option><option>Construction</option>
+      </select>
+    </div>
+    <button class="btn btn-teal" onclick="createProject()">Create Project</button>
+    <button class="btn btn-outline" style="margin-top:.6rem" onclick="closeModal()">Cancel</button>
+  `);
+}
+
+async function createProject() {
+  const name = document.getElementById('npName').value.trim();
+  const cat = document.getElementById('npCat').value;
+  const loc = document.getElementById('npLoc').value.trim();
+  const target = parseInt(document.getElementById('npTarget').value)||0;
+  const desc = document.getElementById('npDesc').value.trim();
+  const sector = document.getElementById('npSector').value;
+  if (!name||!loc) { toast('Please fill in all required fields','error'); return; }
+  const p = { userId: currentUser.id, title: name, glyphId: CAT_GLYPHS[cat]||CAT_GLYPHS.default, category: cat, location: loc, status: 'planning', raised: 0, target, partners: 0, description: desc||'No description provided.', milestones: [{title:'Project Setup',done:true},{title:'Team Formation',done:false},{title:'Funding Round',done:false},{title:'Operations Launch',done:false},{title:'Revenue Phase',done:false}], roiPct: 20, riskLevel: 'Medium', timeline: '24 months', sector, createdAt: Date.now() };
+  await dbAdd('projects', p);
+  await dbAdd('notifications', {userId:currentUser.id, type:'project', title:'Project created: '+name, body:'Your project is live. Start adding team members and seeking funding.', time:Date.now(), read:false});
+  closeModal(); toast('Project created!', 'success'); loadProjects(); loadHome();
+}
+
+async function joinProject(id) {
+  const p = await dbGet('projects', id);
+  p.partners = (p.partners||0)+1; await dbPut('projects', p);
+  await dbAdd('notifications', {userId:currentUser.id, type:'team', title:'Joined '+p.title, body:'You have successfully joined this project as a team member.', time:Date.now(), read:false});
+  toast('You joined the project!', 'success'); openProjectDetail(id);
+}
+
+
+function openInvestModal(projectId) {
+  openModal(`
+    <div class="modal-title">Invest in Project</div>
+    <div style="font-size:.82rem;color:var(--text-mid);margin-bottom:1.2rem">Your investment will be structured via DealDesk with AI-drafted legal documentation.</div>
+    <div class="form-group"><label class="form-label">Investment Amount (₦)</label><input class="form-input" id="invAmount" type="number" placeholder="e.g. 500000"></div>
+    <div class="form-group"><label class="form-label">Investment Type</label>
+      <select class="form-input form-select" id="invType">
+        <option value="revenue_share">Revenue Share</option><option value="equity">Equity</option><option value="loan">Loan</option>
+      </select>
+    </div>
+    <div style="background:var(--teal-pale);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:.78rem;color:var(--text-mid)">
+      <strong style="color:var(--teal)">AI will automatically:</strong><br>
+      Draft partnership agreement · Verify compliance · Generate term sheet
+    </div>
+    <button class="btn btn-teal" onclick="confirmInvest(${projectId})">Confirm Investment</button>
+    <button class="btn btn-outline" style="margin-top:.6rem" onclick="closeModal()">Cancel</button>
+  `);
+}
+
+async function confirmInvest(projectId) {
+  const amount = parseInt(document.getElementById('invAmount').value)||0;
+  const type = document.getElementById('invType').value;
+  if (amount<10000) { toast('Minimum investment is ₦10,000','error'); return; }
+  const p = await dbGet('projects', projectId);
+  p.raised = (p.raised||0)+amount; if (p.raised>=p.target) p.status='active'; await dbPut('projects', p);
+  await dbAdd('investments', {investorId:currentUser.id, projectId, amount, type, date:Date.now()});
+  await dbAdd('notifications', {userId:currentUser.id, type:'investment', title:'Investment confirmed: '+formatMoney(amount), body:'For '+p.title+' · Agreement being drafted by AI', time:Date.now(), read:false});
+  closeModal(); toast('Investment confirmed! AI is drafting your agreement.', 'success'); openProjectDetail(projectId);
+}
+
+
+async function loadDealDesk() {
+  const projects = await dbGetAll('projects');
+  const investable = projects.filter(p=>p.status==='funding'||p.status==='active');
+  const investments = await dbGetAll('investments');
+  document.getElementById('ddTotal').textContent = formatMoney(projects.reduce((s,p)=>s+p.raised,0));
+  document.getElementById('ddDeals').textContent = investments.length;
+  document.getElementById('dealsList').innerHTML = investable.length
+    ? investable.map(p => {
+        const pct = p.target>0?Math.round((p.raised/p.target)*100):0;
+        const glyphId = p.glyphId||getProjectGlyph(p.title,p.category);
+        return `<div class="deal-card">
+          <div class="deal-hd">
+            <div style="display:flex;align-items:center;gap:.7rem">
+              <div style="background:var(--teal-pale);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${glyph(glyphId,18,'var(--teal)')}</div>
+              <div><div class="deal-name">${p.title}</div><div class="deal-sub">${p.sector} · ${p.timeline}</div></div>
+            </div>
+            <div class="deal-amount">${formatMoney(p.target-p.raised)}</div>
+          </div>
+          <div class="deal-tags">
+            <span class="deal-tag">${pct}% Funded</span><span class="deal-tag">ROI: ${p.roiPct}%</span>
+            <span class="deal-tag">${p.riskLevel} Risk</span><span class="deal-tag">${glyph('g-pin',10,'var(--text-mid)')} ${p.location}</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:.8rem"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <button class="btn btn-teal" onclick="openInvestModal(${p.id})">Invest Now — AI Drafts Agreement</button>
+        </div>`;
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">'+glyph('g-briefcase',36,'var(--text-dim)')+'</div><h3>No active deals</h3><p>Create a project and open a funding round</p></div>';
+}
+
+
+async function loadMarket() {
+  const all = await dbGetAll('projects');
+  const opps = all.filter(p=>p.status!=='active'||p.partners<5);
+  document.getElementById('marketList').innerHTML = opps.length
+    ? opps.map(p => {
+        const pct = p.target>0?Math.round((p.raised/p.target)*100):0;
+        const glyphId = p.glyphId||getProjectGlyph(p.title,p.category);
+        return `<div class="card" onclick="openProjectDetail(${p.id})">
+          <div class="pc-top">
+            <div class="pc-icon">${glyph(glyphId,22,'var(--teal)')}</div>
+            <div class="pc-info"><div class="pc-name">${p.title}</div><div class="pc-loc">${glyph('g-pin',11,'var(--text-dim)')} ${p.location} · ${p.sector}</div></div>
+            <span class="badge ${p.status==='funding'?'badge-funding':'badge-new'}">${p.status==='funding'?'Invest':'Join'}</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-labels"><span>${formatMoney(p.raised)} raised</span><span style="font-weight:700;color:var(--teal)">${pct}%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          </div>
+          <div class="tags-row">
+            <span class="tag">ROI ${p.roiPct}%</span><span class="tag">${p.riskLevel} Risk</span>
+            <span class="tag">${p.partners} partners</span><span class="tag teal">${p.category}</span>
+          </div>
+        </div>`;
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">'+glyph('g-globe',36,'var(--text-dim)')+'</div><h3>No opportunities yet</h3></div>';
+}
+
+
+const aiKnowledge = {
+  draft: async () => {
+    const ps = await dbGetByIndex('projects','userId',currentUser?.id||0);
+    const pname = ps.length?ps[0].title:'your project';
+    return `I've drafted a Revenue Share Agreement for <strong>${pname}</strong>:\n\n<strong>BIZNY PARTNERSHIP AGREEMENT</strong>\n\nThis agreement is made between ${currentUser?.name||'the Founder'} ("Founder") and the investing party ("Investor").\n\n<strong>Terms:</strong>\n• Investment amount: As agreed\n• Return structure: Revenue share\n• Reporting: Quarterly\n• Duration: Per project timeline\n• Dispute resolution: Bizny DealDesk\n\nThis draft is ready for review. Shall I finalize it?`;
+  },
+  match: async () => {
+    const investors = ['Diaspora Capital (UK) — ₦8M available','AfriVentures Lagos — ₦5M available','IFC-linked Fund — ₦12M available','AfDB Impact Fund — ₦20M available'];
+    return `<strong>Investor Matches Found</strong>\n\nBased on your project portfolio:\n\n${investors.map(i=>'• '+i).join('\n')}\n\nAll have been pre-screened for sector alignment. Want me to initiate introductions?`;
+  },
+  feasibility: async () => {
+    const ps = await dbGetByIndex('projects','userId',currentUser?.id||0);
+    const p = ps[0];
+    if (!p) return 'No projects found. Create a project first.';
+    return `<strong>Feasibility Report: ${p.title}</strong>\n\n✓ Market Demand: HIGH\n✓ Supply Chain: VERIFIED\n✓ ROI Projection: ${p.roiPct}%\n⚠ Regulatory: Check licenses\n✓ Financial Model: Positive NPV\n\nOverall Score: 78/100 — <strong>Viable</strong>\n\nFull 12-page report is ready for download.`;
+  },
+  compliance: async () => {
+    const ps = await dbGetByIndex('projects','userId',currentUser?.id||0);
+    if (!ps.length) return 'No projects to check. Create a project first.';
+    return `<strong>Compliance Check Results</strong>\n\n${ps.map(p=>`<strong>${p.title}</strong>\n• CAC Registration: ✓\n• NAFDAC (if food): ⚠ Pending\n• SON Certification: ⚠ Review\n• Export License: ${p.category==='Export'?'⚠ Apply':'N/A'}`).join('\n\n')}\n\nI've flagged items that need attention. Want me to guide you?`;
+  }
+};
+
+const aiGeneralResponses = [
+  "I can help you structure your business, find investors, draft agreements, and navigate compliance across Africa. What specific aspect would you like help with?",
+  "Based on current market data, Africa's industrial sector is growing at 6.2% annually. Your project is well-positioned. Would you like a detailed market analysis?",
+  "I can generate a complete feasibility report, supply chain map, and financial projections for any of your projects. Just let me know which one to analyze.",
+  "For export businesses, the key compliance requirements are CAC registration, export license from NEPC, product certification, and customs documentation. I can walk you through each step.",
+  "I've analyzed 3,000+ African industrial projects. The top success factors are: structured capital, verified supply chain, and strong local partnerships — all of which Bizny helps you build.",
+  "Your current project portfolio shows strong potential. I recommend prioritizing the funding round for your highest-ROI project first. Shall I draft an investor pitch?",
+];
+
+async function aiQuick(type) {
+  addChatMsg('User', type==='draft'?'Draft a partnership agreement':type==='match'?'Find matching investors for my projects':type==='feasibility'?'Generate a feasibility report':'Check compliance for my projects', 'user');
+  const thinkDiv = addChatMsg('AI', 'Analyzing your projects...', 'bot thinking');
+  setTimeout(async () => {
+    const fn = aiKnowledge[type];
+    const resp = fn?await fn():'I can help with that!';
+    thinkDiv.className='chat-msg bot'; thinkDiv.innerHTML=resp.replace(/\n/g,'<br>'); scrollChat();
+  }, 900);
+}
+
+function addChatMsg(from, text, cls) {
+  const wrap = document.getElementById('chatMessages');
+  const div = document.createElement('div'); div.className='chat-msg '+cls; div.innerHTML=text.replace(/\n/g,'<br>');
+  wrap.appendChild(div); scrollChat(); return div;
+}
+function scrollChat() { const w=document.getElementById('chatMessages'); if(w) w.scrollTop=w.scrollHeight; }
+
+async function sendChat() {
+  const input = document.getElementById('chatInput'); const msg = input.value.trim();
+  if (!msg) return; input.value=''; addChatMsg('User', msg, 'user');
+  const thinkDiv = addChatMsg('AI', 'Thinking...', 'bot thinking');
+  let resp; const lower = msg.toLowerCase();
+  if (lower.includes('draft')||lower.includes('agreement')||lower.includes('contract')) resp = await aiKnowledge.draft();
+  else if (lower.includes('invest')||lower.includes('capital')||lower.includes('fund')||lower.includes('match')) resp = await aiKnowledge.match();
+  else if (lower.includes('feasib')||lower.includes('report')||lower.includes('roi')||lower.includes('financial')) resp = await aiKnowledge.feasibility();
+  else if (lower.includes('compli')||lower.includes('license')||lower.includes('nafdac')||lower.includes('cac')) resp = await aiKnowledge.compliance();
+  else resp = aiGeneralResponses[Math.floor(Math.random()*aiGeneralResponses.length)];
+  setTimeout(() => { thinkDiv.className='chat-msg bot'; thinkDiv.innerHTML=resp.replace(/\n/g,'<br>'); scrollChat(); }, 1000);
+}
+function clearChat() { document.getElementById('chatMessages').innerHTML='<div class="chat-msg bot">Chat cleared. How can I help you today?</div>'; }
+function loadAI() { scrollChat(); }
+
+
+async function loadProfile() {
+  if (!currentUser) return;
+  const u = currentUser;
+  document.getElementById('profileName').textContent = u.name;
+  document.getElementById('profileRole').textContent = (u.roles||[]).join(' · ')+(u.country?' · '+u.country:'');
+  const initials = u.name.charAt(0).toUpperCase()+(u.name.split(' ')[1]||'').charAt(0).toUpperCase();
+  document.getElementById('profileAvatar').textContent = initials||'?';
+  const projects = await dbGetByIndex('projects','userId',u.id);
+  document.getElementById('prjCount').textContent = projects.length;
+  document.getElementById('prjRaised').textContent = formatMoney(projects.reduce((s,p)=>s+p.raised,0));
+  document.getElementById('prjPartners').textContent = projects.reduce((s,p)=>s+p.partners,0);
+  document.getElementById('prjScore').textContent = u.score||85;
+  const tags = [...(u.roles||[]),u.country,u.sector].filter(Boolean);
+  document.getElementById('profileTags').innerHTML = `<div style="display:flex;gap:.45rem;flex-wrap:wrap">${tags.map(t=>`<span style="font-size:.7rem;background:var(--teal-pale);color:var(--teal);padding:.22rem .65rem;border-radius:20px;font-weight:600">${t}</span>`).join('')}${u.verified?'<span style="font-size:.7rem;background:var(--green-pale);color:#1a9950;padding:.22rem .65rem;border-radius:20px;font-weight:600">Verified</span>':''}</div>`;
+}
+
+function openEditProfile() {
+  const u = currentUser;
+  openModal(`
+    <div class="modal-title">Edit Profile</div>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="epName" value="${u.name}"></div>
+    <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="epPhone" value="${u.phone||''}"></div>
+    <div class="form-group"><label class="form-label">City</label><input class="form-input" id="epCity" value="${u.city||''}"></div>
+    <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input form-textarea" id="epBio" placeholder="Tell the community about yourself...">${u.bio||''}</textarea></div>
+    <button class="btn btn-teal" onclick="saveProfile()">Save Changes</button>
+    <button class="btn btn-outline" style="margin-top:.6rem" onclick="closeModal()">Cancel</button>
+  `);
+}
+async function saveProfile() {
+  currentUser.name = document.getElementById('epName').value.trim()||currentUser.name;
+  currentUser.phone = document.getElementById('epPhone').value.trim();
+  currentUser.city = document.getElementById('epCity').value.trim();
+  currentUser.bio = document.getElementById('epBio').value.trim();
+  await dbPut('users', currentUser); closeModal(); toast('Profile updated!', 'success'); loadProfile();
+}
+
+function openSettings() {
+  openModal(`
+    <div class="modal-title">Settings</div>
+    <div class="menu-item" style="padding:.9rem 0;border-bottom:1px solid var(--border)"><span class="menu-icon">${glyph('g-bell',18,'var(--teal)')}</span><span class="menu-label">Push Notifications</span><span style="color:var(--teal);font-weight:700;font-size:.82rem">On</span></div>
+    <div class="menu-item" style="padding:.9rem 0;border-bottom:1px solid var(--border)"><span class="menu-icon">${glyph('g-star',18,'var(--teal)')}</span><span class="menu-label">Dark Mode</span><span style="color:var(--text-dim);font-weight:700;font-size:.82rem">Off</span></div>
+    <div class="menu-item" style="padding:.9rem 0;border-bottom:1px solid var(--border)"><span class="menu-icon">${glyph('g-dollar',18,'var(--teal)')}</span><span class="menu-label">Currency</span><span style="color:var(--text-mid);font-weight:700;font-size:.82rem">NGN ₦</span></div>
+    <div class="menu-item" style="padding:.9rem 0;border-bottom:1px solid var(--border)"><span class="menu-icon">${glyph('g-globe',18,'var(--teal)')}</span><span class="menu-label">Language</span><span style="color:var(--text-mid);font-weight:700;font-size:.82rem">English</span></div>
+    <div style="height:.5rem"></div>
+    <button class="btn btn-red" onclick="doLogout()">Sign Out</button>
+    <button class="btn btn-outline" style="margin-top:.6rem" onclick="closeModal()">Close</button>
+  `);
+}
+
+
+async function loadNotif() {
+  const notifs = await dbGetByIndex('notifications','userId',currentUser.id);
+  notifs.sort((a,b)=>b.time-a.time);
+  for (const n of notifs) { if (!n.read) { n.read=true; await dbPut('notifications', n); } }
+  document.getElementById('notifBadge').style.display='none';
+  document.getElementById('notifList').innerHTML = notifs.length
+    ? notifs.map(n => {
+        const g = NOTIF_GLYPHS[n.type]||NOTIF_GLYPHS.default;
+        return `<div class="notif-item${n.read?'':' unread'}">
+          <div class="notif-icon">${glyph(g,20,'var(--teal)')}</div>
+          <div class="notif-text"><div class="notif-title">${n.title}</div><div class="notif-sub">${n.body} · ${timeAgo(n.time)}</div></div>
+        </div>`;
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">'+glyph('g-bell',36,'var(--text-dim)')+'</div><h3>All caught up!</h3><p>No notifications yet</p></div>';
+}
+async function clearNotifs() {
+  const notifs = await dbGetByIndex('notifications','userId',currentUser.id);
+  for (const n of notifs) await dbDelete('notifications', n.id);
+  loadNotif(); toast('Notifications cleared');
+}
+
+
+const TEMPLATES = [
+  {glyphId:'g-droplet', name:'Palm Oil Export Business', cat:'Agriculture', steps:8, time:'18 months', roi:'22%'},
+  {glyphId:'g-milk', name:'Soy Milk Production Plant', cat:'Food', steps:6, time:'24 months', roi:'28%'},
+  {glyphId:'g-bug', name:'Insect Protein Farm', cat:'Agriculture', steps:7, time:'30 months', roi:'35%'},
+  {glyphId:'g-fruit', name:'Mango Processing & Export', cat:'Agriculture', steps:9, time:'20 months', roi:'25%'},
+  {glyphId:'g-sun', name:'Solar Micro-grid Installation', cat:'Energy', steps:10, time:'36 months', roi:'18%'},
+  {glyphId:'g-grain', name:'Cassava Processing Plant', cat:'Manufacturing', steps:8, time:'24 months', roi:'30%'},
+  {glyphId:'g-jar', name:'Tomato Paste Factory', cat:'Food', steps:7, time:'18 months', roi:'26%'},
+  {glyphId:'g-fish', name:'Fish Farming & Processing', cat:'Agriculture', steps:6, time:'12 months', roi:'40%'},
+  {glyphId:'g-textile', name:'Textile Manufacturing', cat:'Manufacturing', steps:12, time:'36 months', roi:'20%'},
+  {glyphId:'g-building', name:'Affordable Housing Dev.', cat:'Construction', steps:15, time:'48 months', roi:'32%'},
+  {glyphId:'g-plant', name:'Moringa Processing & Export', cat:'Agriculture', steps:5, time:'15 months', roi:'45%'},
+  {glyphId:'g-flame', name:'Biomass Energy Plant', cat:'Energy', steps:11, time:'36 months', roi:'22%'},
+];
+
+function loadTemplates() {
+  document.getElementById('templatesList').innerHTML = TEMPLATES.map(t => `
+    <div class="tmpl-card" onclick="useTemplate('${t.name}','${t.cat}','${t.glyphId}')">
+      <div class="tmpl-icon">${glyph(t.glyphId,24,'var(--teal)')}</div>
+      <div style="flex:1">
+        <div class="tmpl-name">${t.name}</div>
+        <div class="tmpl-sub">${t.cat} · ${t.steps} steps · Est. ROI ${t.roi} · ${t.time}</div>
+      </div>
+      <div class="tmpl-arrow">›</div>
+    </div>
+  `).join('');
+}
+
+function useTemplate(name, cat, glyphId) {
+  closeModal(); nav('screenProjects');
+  setTimeout(() => {
+    openModal(`
+      <div class="modal-title">Use Template: ${name}</div>
+      <div style="background:var(--teal-pale);border-radius:10px;padding:1rem;margin-bottom:1.2rem;font-size:.82rem;color:var(--text-mid)">
+        This template includes a step-by-step guide, compliance checklist, supply chain map, financial model, and team structure.
+      </div>
+      <div class="form-group"><label class="form-label">Project Location</label><input class="form-input" id="tpLoc" placeholder="e.g. Kano, Nigeria"></div>
+      <div class="form-group"><label class="form-label">Capital Target (₦)</label><input class="form-input" id="tpTarget" type="number" placeholder="Based on template"></div>
+      <button class="btn btn-teal" onclick="createFromTemplate('${name}','${cat}','${glyphId}')">Create Project from Template</button>
+      <button class="btn btn-outline" style="margin-top:.6rem" onclick="closeModal()">Cancel</button>
+    `);
+  }, 300);
+}
+
+async function createFromTemplate(name, cat, glyphId) {
+  const loc = document.getElementById('tpLoc').value.trim()||'Nigeria';
+  const target = parseInt(document.getElementById('tpTarget').value)||20000000;
+  const tmpl = TEMPLATES.find(t=>t.name===name);
+  const p = { userId: currentUser.id, title: name, glyphId: glyphId||CAT_GLYPHS[cat]||'g-folder', category: cat, location: loc, status: 'planning', raised: 0, target, partners: 0, description: `${name} — built using the Bizny verified template. This project follows a proven step-by-step blueprint for success in the African market.`, milestones: Array.from({length:tmpl?.steps||6},(_,i)=>({title:`Step ${i+1}`,done:i===0})), roiPct: parseInt(tmpl?.roi||'20'), riskLevel: 'Medium', timeline: tmpl?.time||'24 months', sector: cat, createdAt: Date.now() };
+  await dbAdd('projects', p); closeModal(); toast('Project created from template!', 'success'); nav('screenProjects');
+}
+
+
+function doLogout() { clearSession(); closeModal(); toast('Signed out. See you soon!'); setTimeout(()=>nav('screenSplash'),800); }
+
+function formatMoney(n) {
+  if (!n) return '₦0';
+  if (n>=1000000) return '₦'+(n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+  if (n>=1000) return '₦'+(n/1000).toFixed(0)+'K';
+  return '₦'+n;
+}
+function timeAgo(ts) {
+  const d=Date.now()-ts;
+  if (d<60000) return 'just now';
+  if (d<3600000) return Math.floor(d/60000)+' mins ago';
+  if (d<86400000) return Math.floor(d/3600000)+' hrs ago';
+  return Math.floor(d/86400000)+' days ago';
+}
+function shareProject() { toast('Share link copied to clipboard!', 'success'); }
+function openEditProjectModal(id) { toast('Edit project — coming soon!'); }
+
+
+async function boot() {
+  await initDB();
+  const loggedIn = await loadSession();
+  if (loggedIn) { nav('screenHome'); }
+  else { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screenSplash').classList.add('active'); }
+}
+boot();
+</script>
+</body>
+</html>
