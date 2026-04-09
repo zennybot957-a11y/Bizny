@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Supabase via REST API (no SDK to avoid cloning issues) -->
 <style>
-
+/* ── KNOWLEDGE HUB / HYBRID CO-PILOT STYLES ── */
 .kr-card{background:var(--gold-pale);border:1.5px solid #f5c842;border-radius:12px;padding:.9rem 1rem;margin-bottom:.75rem}
 .kr-badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--gold);color:white;font-size:.62rem;font-weight:800;padding:.2rem .55rem;border-radius:20px;margin-bottom:.5rem;letter-spacing:.04em}
 .kr-title{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
@@ -79,7 +79,7 @@ body.dark-mode .ind-name{color:#d0e8e8}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#0a5c60;font-family:'Montserrat',sans-serif;display:block;min-height:100%;margin:0;padding:0;overflow:hidden;}
 
-
+/* ── DARK MODE ── */
 body.dark-mode{background:#0a0f0f}
 body.dark-mode #app{background:#111a1a}
 body.dark-mode .app-header{background:#053437}
@@ -104,36 +104,35 @@ body.dark-mode .role-card{background:#1a2b2b;border-color:#1e3030}
 body.dark-mode .role-name{color:#d0e8e8}
 
 
-
+/* ── CHAT STYLES ── */
 .conv-item{display:flex;align-items:center;gap:.9rem;padding:.9rem;border-radius:12px;cursor:pointer;border:1px solid var(--border);margin-bottom:.6rem;background:white}
 .conv-item:hover{border-color:var(--teal);background:var(--teal-pale)}
 body.dark-mode .conv-item{background:#1a2b2b;border-color:#1e3030}
 .feed-card{background:white;border-radius:14px;border:1px solid var(--border);padding:1rem;margin-bottom:.75rem}
 body.dark-mode .feed-card{background:#1a2b2b;border-color:#1e3030}
-
+/* ── NAV BADGE ── */
 .nav-icon-wrap{position:relative;display:inline-block}
 .notif-badge{position:absolute;top:-4px;right:-6px;background:var(--red);color:white;border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
 
 
-
+/* ── AI QUICK BUTTONS ── */
 .ai-quick-btn{background:white;border:1px solid var(--border);border-radius:12px;padding:.85rem;text-align:center;cursor:pointer;transition:all .18s;user-select:none}
 .ai-quick-btn:active{transform:scale(.96);background:var(--teal-pale);border-color:var(--teal)}
 body.dark-mode .ai-quick-btn{background:#1a2b2b;border-color:#1e3030}
-
+/* ── TYPING DOTS ── */
 .typing-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 2px;animation:dotBounce 1.2s infinite}
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dotBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
-
-
+/* ── NOTIFICATION ACTIONS ── */
 .notif-actions{display:flex;gap:.5rem;margin-top:.65rem}
 .notif-btn{flex:1;padding:.45rem .7rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:'Montserrat',sans-serif;transition:all .2s;text-align:center}
 .notif-btn-primary{background:var(--teal);color:white}
 .notif-btn-secondary{background:var(--surface);color:var(--text-mid);border:1px solid var(--border)}
 body.dark-mode .notif-btn-secondary{background:#1e3030;border-color:#2a4040;color:#8ab0b2}
 
-
+/* ── PROFILE PICTURE ── */
 .avatar-wrap{position:relative;display:inline-block;margin:0 auto .7rem;cursor:pointer}
 .avatar-wrap .avatar{margin:0}
 .avatar-edit-btn{position:absolute;bottom:0;right:0;width:24px;height:24px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;cursor:pointer}
@@ -153,15 +152,12 @@ body.dark-mode .toggle-slider{background:#2a4040}
 .setting-option{padding:.35rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--text-mid);font-family:'Montserrat',sans-serif;transition:all .2s}
 .setting-option.active{background:var(--teal);border-color:var(--teal);color:white}
 body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8ab0b2}
-#app{position:fixed;
-  top:0;top:env(safe-area-inset-top,0);
-  left:0;right:0;
-  bottom:0;bottom:env(safe-area-inset-bottom,0);
+#app{position:fixed;top:0;left:0;right:0;bottom:0;
   width:100%;height:100%;
-  background:var(--off-white);overflow:hidden;
-  display:flex;flex-direction:column;}
-.screen{display:none;flex-direction:column;min-height:100vh;min-height:-webkit-fill-available;animation:fadeIn .25s ease}
-.screen.active{display:flex}
+  background:var(--off-white);
+  overflow-x:hidden;overflow-y:hidden;}
+.screen{display:none;flex-direction:column;height:100%;position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;animation:fadeIn .25s ease}
+.screen.active{display:flex;z-index:1}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
@@ -387,7 +383,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
 .search-bar{background:rgba(255,255,255,.12);border-radius:8px;padding:.65rem 1rem;display:flex;align-items:center;gap:.6rem;margin-top:.8rem}
 .search-bar input{background:none;border:none;color:white;font-family:'Montserrat',sans-serif;font-size:.85rem;outline:none;flex:1}
 .search-bar input::placeholder{color:rgba(255,255,255,.5)}
-.scroll-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.2rem;padding-bottom:90px}
+.scroll-content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:1.2rem;padding-bottom:90px}
 .scroll-content::-webkit-scrollbar{width:3px}
 .scroll-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;width:100%;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:.55rem 0 calc(.75rem + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(13,115,119,.1)}
@@ -1728,15 +1724,18 @@ async function dbPut(store, data) {
 async function dbGet(store, key) {
   const table = SB_TABLES[store]; if (!table) return null;
   try {
-    const row = await sbFetch('GET', table, { filter: `id=eq.${key}`, single: true });
-    return row ? adaptRow(store, row) : null;
-  } catch(e) { return null; }
+    // Use array fetch then take first — avoids single:true throwing on 0 rows
+    const rows = await sbFetch('GET', table, { filter: `id=eq.${encodeURIComponent(key)}&limit=1` });
+    if (!rows || !rows.length) return null;
+    return adaptRow(store, rows[0]);
+  } catch(e) { console.warn('dbGet', store, key, e.message); return null; }
 }
 
 async function dbGetAll(store) {
   const table = SB_TABLES[store]; if (!table) return [];
   try {
-    const rows = await sbFetch('GET', table, { filter: 'order=created_at.desc' });
+    // limit=1000 ensures all records load, not just Supabase default 20
+    const rows = await sbFetch('GET', table, { filter: 'order=created_at.desc&limit=1000' });
     return (rows || []).map(r => adaptRow(store, r));
   } catch(e) { console.warn('dbGetAll', store, e.message); return []; }
 }
@@ -1819,6 +1818,15 @@ function adaptRow(store, row) {
   if (r.escrow_confirmed_at !== undefined) r.escrowConfirmedAt = r.escrow_confirmed_at;
   if (typeof r.milestones === 'string') { try { r.milestones = JSON.parse(r.milestones); } catch(e) { r.milestones = []; } }
   if (typeof r.roles === 'string')      { try { r.roles      = JSON.parse(r.roles);      } catch(e) { r.roles = []; } }
+  // Posts: map author_id/author_name → creatorId/creatorName for display
+  if (r.author_id   !== undefined && !r.creatorId)   r.creatorId   = r.author_id;
+  if (r.author_name !== undefined && !r.creatorName)  r.creatorName = r.author_name;
+  if (r.user_id     !== undefined && !r.creatorId)   r.creatorId   = r.user_id;
+  // Ensure timestamp is populated from created_at
+  if (!r.timestamp && r.created_at) r.timestamp = new Date(r.created_at).getTime();
+  if (!r.timestamp && r.createdAt)  r.timestamp = r.createdAt;
+  // Tags: if stored as comma-string, convert to array for display
+  if (typeof r.tags === 'string') r.tags = r.tags.split(',').map(t=>t.trim()).filter(Boolean);
   return r;
 }
 
@@ -2081,11 +2089,9 @@ function nav(screenId){
   const t=document.getElementById(screenId);
   if(t){
     t.classList.add('active');
-    t.scrollTop=0;
-    // Also reset window scroll (needed on mobile browsers & iOS)
-    window.scrollTo(0,0);
-    document.documentElement.scrollTop=0;
-    document.body.scrollTop=0;
+    // Reset internal scroll of the scroll-content div inside this screen
+    const sc = t.querySelector('.scroll-content');
+    if(sc) sc.scrollTop = 0;
   }
   const loaders={screenHome:loadHome,screenProjects:loadProjects,screenDealDesk:loadDealDesk,screenDealFlow:loadDealFlow,screenProfile:loadProfile,screenNotif:loadNotifications,screenTemplates:loadTemplates,screenMarket:loadMarket,screenPostBoard:loadPostBoard,screenAI:loadAI,screenInvestors:loadInvestors,screenMessages:loadMessages,screenCommunity:loadCommunity,screenKnowledge:loadKnowledgeHub,screenContribute:refreshContributeDataPoints,screenWallet:loadWallet,screenExplore:loadExplore,screenRequests:loadRequests,screenQA:loadQA};
   if(loaders[screenId]) {
@@ -2252,7 +2258,12 @@ function _getDeletedIds(){ try{ return new Set(JSON.parse(localStorage.getItem('
 
 async function loadProjects(filter='all'){
   const deletedIds = _getDeletedIds();
-  const all=(await dbGetAll('projects')).filter(p=>!deletedIds.has(String(p.id)));
+  let rawProj = [];
+  try {
+    const r = await sbFetch('GET','bz_projects',{filter:'order=created_at.desc&limit=1000'});
+    rawProj = (r||[]).map(row=>adaptRow('projects',row));
+  } catch(e){ rawProj = await dbGetAll('projects'); }
+  const all = rawProj.filter(p=>!deletedIds.has(String(p.id)));
   let projects=all;
   if(filter==='mine') projects=all.filter(p=>p.userId===currentUser.id);
   else if(filter==='active') projects=all.filter(p=>p.status==='active');
@@ -3031,7 +3042,11 @@ async function _renderPostBoard() {
   const el = document.getElementById('postBoardList');
   if(!el) return;
   let posts = [];
-  try { posts = await dbGetAll('posts'); } catch(e) { posts = []; }
+  try {
+    // Fetch ALL posts — no user filter, all users see all posts
+    const raw = await sbFetch('GET','bz_posts',{filter:'order=created_at.desc&limit=1000'});
+    posts = (raw||[]).map(r=>adaptRow('posts',r));
+  } catch(e) { console.warn('PostBoard fetch failed:',e.message); posts=[]; }
   // Merge localStorage fallback posts (used when bz_posts table not yet created)
   try {
     const localPosts = JSON.parse(localStorage.getItem('bizny_posts_local')||'[]');
