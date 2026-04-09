@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bizny">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a5c60">
 <title>Bizny — Open Productivity Ecosystem</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Supabase via REST API (no SDK to avoid cloning issues) -->
 <style>
-/* ── KNOWLEDGE HUB / HYBRID CO-PILOT STYLES ── */
+
 .kr-card{background:var(--gold-pale);border:1.5px solid #f5c842;border-radius:12px;padding:.9rem 1rem;margin-bottom:.75rem}
 .kr-badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--gold);color:white;font-size:.62rem;font-weight:800;padding:.2rem .55rem;border-radius:20px;margin-bottom:.5rem;letter-spacing:.04em}
 .kr-title{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
@@ -72,9 +77,9 @@ body.dark-mode .ind-name{color:#d0e8e8}
   --green-pale: #e8faf0;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#e8f0f0;font-family:'Montserrat',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:0}
+body{background:#0a5c60;font-family:'Montserrat',sans-serif;display:block;min-height:100%;margin:0;padding:0;overflow:hidden;}
 
-/* ── DARK MODE ── */
+
 body.dark-mode{background:#0a0f0f}
 body.dark-mode #app{background:#111a1a}
 body.dark-mode .app-header{background:#053437}
@@ -99,35 +104,36 @@ body.dark-mode .role-card{background:#1a2b2b;border-color:#1e3030}
 body.dark-mode .role-name{color:#d0e8e8}
 
 
-/* ── CHAT STYLES ── */
+
 .conv-item{display:flex;align-items:center;gap:.9rem;padding:.9rem;border-radius:12px;cursor:pointer;border:1px solid var(--border);margin-bottom:.6rem;background:white}
 .conv-item:hover{border-color:var(--teal);background:var(--teal-pale)}
 body.dark-mode .conv-item{background:#1a2b2b;border-color:#1e3030}
 .feed-card{background:white;border-radius:14px;border:1px solid var(--border);padding:1rem;margin-bottom:.75rem}
 body.dark-mode .feed-card{background:#1a2b2b;border-color:#1e3030}
-/* ── NAV BADGE ── */
+
 .nav-icon-wrap{position:relative;display:inline-block}
 .notif-badge{position:absolute;top:-4px;right:-6px;background:var(--red);color:white;border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
 
 
-/* ── AI QUICK BUTTONS ── */
+
 .ai-quick-btn{background:white;border:1px solid var(--border);border-radius:12px;padding:.85rem;text-align:center;cursor:pointer;transition:all .18s;user-select:none}
 .ai-quick-btn:active{transform:scale(.96);background:var(--teal-pale);border-color:var(--teal)}
 body.dark-mode .ai-quick-btn{background:#1a2b2b;border-color:#1e3030}
-/* ── TYPING DOTS ── */
+
 .typing-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 2px;animation:dotBounce 1.2s infinite}
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dotBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
-/* ── NOTIFICATION ACTIONS ── */
+
+
 .notif-actions{display:flex;gap:.5rem;margin-top:.65rem}
 .notif-btn{flex:1;padding:.45rem .7rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:'Montserrat',sans-serif;transition:all .2s;text-align:center}
 .notif-btn-primary{background:var(--teal);color:white}
 .notif-btn-secondary{background:var(--surface);color:var(--text-mid);border:1px solid var(--border)}
 body.dark-mode .notif-btn-secondary{background:#1e3030;border-color:#2a4040;color:#8ab0b2}
 
-/* ── PROFILE PICTURE ── */
+
 .avatar-wrap{position:relative;display:inline-block;margin:0 auto .7rem;cursor:pointer}
 .avatar-wrap .avatar{margin:0}
 .avatar-edit-btn{position:absolute;bottom:0;right:0;width:24px;height:24px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;cursor:pointer}
@@ -147,8 +153,14 @@ body.dark-mode .toggle-slider{background:#2a4040}
 .setting-option{padding:.35rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--text-mid);font-family:'Montserrat',sans-serif;transition:all .2s}
 .setting-option.active{background:var(--teal);border-color:var(--teal);color:white}
 body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8ab0b2}
-#app{width:100%;max-width:430px;min-height:100vh;background:var(--off-white);position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,0.15)}
-.screen{display:none;flex-direction:column;min-height:100vh;animation:fadeIn .25s ease}
+#app{position:fixed;
+  top:0;top:env(safe-area-inset-top,0);
+  left:0;right:0;
+  bottom:0;bottom:env(safe-area-inset-bottom,0);
+  width:100%;height:100%;
+  background:var(--off-white);overflow:hidden;
+  display:flex;flex-direction:column;}
+.screen{display:none;flex-direction:column;min-height:100vh;min-height:-webkit-fill-available;animation:fadeIn .25s ease}
 .screen.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -375,10 +387,10 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
 .search-bar{background:rgba(255,255,255,.12);border-radius:8px;padding:.65rem 1rem;display:flex;align-items:center;gap:.6rem;margin-top:.8rem}
 .search-bar input{background:none;border:none;color:white;font-family:'Montserrat',sans-serif;font-size:.85rem;outline:none;flex:1}
 .search-bar input::placeholder{color:rgba(255,255,255,.5)}
-.scroll-content{flex:1;overflow-y:auto;padding:1.2rem;padding-bottom:90px}
+.scroll-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.2rem;padding-bottom:90px}
 .scroll-content::-webkit-scrollbar{width:3px}
 .scroll-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:.55rem 0 .75rem;z-index:100;box-shadow:0 -4px 20px rgba(13,115,119,.1)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;width:100%;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:.55rem 0 calc(.75rem + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(13,115,119,.1)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;padding:.1rem .8rem;border:none;background:none;transition:all .2s}
 .nav-icon{font-size:1.25rem;line-height:1;display:flex;align-items:center;justify-content:center;width:26px;height:26px}
 .nav-label{font-size:.6rem;color:var(--text-dim);font-weight:600;letter-spacing:.03em;font-family:'Montserrat',sans-serif}
@@ -444,7 +456,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
 .form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
 .form-divider::before{left:0}
 .form-divider::after{right:0}
-#toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;padding:.7rem 1.4rem;border-radius:25px;font-size:.82rem;font-weight:600;z-index:999;display:none;max-width:360px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideUp .3s ease}
+#toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;padding:.7rem 1.4rem;border-radius:25px;font-size:.82rem;font-weight:600;z-index:999;display:none;max-width:80vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideUp .3s ease}
 #toast.error{background:var(--red)}
 #toast.success{background:#1a9950}
 .loader{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-right:.5rem;vertical-align:middle}
@@ -494,7 +506,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
 .menu-arrow{color:var(--text-dim);font-size:.9rem}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal{background:white;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease}
+.modal{background:white;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease}
 .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.2rem}
 .modal-title{font-size:1.1rem;font-weight:800;margin-bottom:1.2rem}
 .divider{height:8px;background:var(--surface);margin:0 -1.2rem 1.2rem}
@@ -864,6 +876,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
       <div class="role-grid" id="roleGrid">
         <div class="role-card" data-role="Founder" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-rocket"/></svg></div><div class="role-name">Founder</div><div class="role-desc">Starting a business</div></div>
         <div class="role-card" data-role="Investor" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-coins"/></svg></div><div class="role-name">Investor</div><div class="role-desc">Fund projects</div></div>
+        <div class="role-card" data-role="Collaborator" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-users"/></svg></div><div class="role-name">Collaborator</div><div class="role-desc">Join & co-build</div></div>
         <div class="role-card" data-role="Engineer" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-wrench"/></svg></div><div class="role-name">Engineer</div><div class="role-desc">Technical skills</div></div>
         <div class="role-card" data-role="Manufacturer" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-factory"/></svg></div><div class="role-name">Manufacturer</div><div class="role-desc">Production capacity</div></div>
         <div class="role-card" data-role="Exporter" onclick="toggleRole(this)"><div class="role-icon"><svg width="28" height="28" color="var(--teal)"><use href="#g-ship"/></svg></div><div class="role-name">Exporter</div><div class="role-desc">Cross-border trade</div></div>
@@ -928,6 +941,10 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
           <button class="icon-btn" onclick="nav('screenNotif')"><svg width="18" height="18" color="white"><use href="#g-bell"/></svg></button>
           <div class="notif-badge" id="notifBadge">3</div>
         </div>
+        <div class="notif-wrap" style="position:relative">
+          <button class="icon-btn" onclick="nav('screenMessages')"><svg width="18" height="18" color="white"><use href="#g-message"/></svg></button>
+          <span class="notif-badge" id="msgBadge" style="display:none"></span>
+        </div>
         <button class="icon-btn" onclick="nav('screenProfile')"><svg width="18" height="18" color="white"><use href="#g-user"/></svg></button>
       </div>
     </div>
@@ -959,13 +976,24 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
     <div class="sec-hd"><div class="sec-title">Active Projects</div><button class="sec-link" onclick="nav('screenProjects')">See all →</button></div>
     <div id="homeProjectsList"></div>
     <div class="divider"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;padding:.25rem 0 .5rem">
+      <button onclick="nav('screenExplore')" style="background:rgba(255,255,255,.1);border:none;border-radius:12px;padding:.6rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;color:white;font-family:'Montserrat',sans-serif">
+        <span style="font-size:1.3rem">🔎</span><span style="font-size:.65rem;font-weight:600">Explore</span>
+      </button>
+      <button onclick="nav('screenRequests')" style="background:rgba(255,255,255,.1);border:none;border-radius:12px;padding:.6rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;color:white;font-family:'Montserrat',sans-serif">
+        <span style="font-size:1.3rem">📢</span><span style="font-size:.65rem;font-weight:600">Requests</span>
+      </button>
+      <button onclick="nav('screenQA')" style="background:rgba(255,255,255,.1);border:none;border-radius:12px;padding:.6rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;color:white;font-family:'Montserrat',sans-serif">
+        <span style="font-size:1.3rem">❓</span><span style="font-size:.65rem;font-weight:600">Q&A</span>
+      </button>
+    </div>
     <div class="sec-hd"><div class="sec-title">Open Opportunities</div><button class="sec-link" onclick="nav('screenProjects')">See all →</button></div>
     <div class="h-scroll" id="homeOpps"></div>
   </div>
   <div class="bottom-nav">
     <button class="nav-item active" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div><div class="nav-dot"></div></button>
     <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
-    <button class="nav-item" onclick="nav('screenMessages')"><div class="nav-icon nav-icon-wrap"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-message"/></svg><span class="notif-badge"></span></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1001,7 +1029,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item active" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div><div class="nav-dot"></div></button>
-    <button class="nav-item" onclick="nav('screenMessages')"><div class="nav-icon nav-icon-wrap"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-message"/></svg><span class="notif-badge"></span></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1022,7 +1050,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item active" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div><div class="nav-dot"></div></button>
-    <button class="nav-item" onclick="nav('screenMessages')"><div class="nav-icon nav-icon-wrap"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-message"/></svg><span class="notif-badge"></span></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1115,7 +1143,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
     <div class="header-top">
       <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
       <span class="header-title">Post Board</span>
-      <button class="icon-btn" data-action="openCreatePost" data-pid="0"><svg width="18" height="18" color="white"><use href="#g-plus"/></svg></button>
+      <button class="icon-btn" onclick="if(requireAuth('create a post')) openCreatePost('Innovation')"><svg width="18" height="18" color="white"><use href="#g-plus"/></svg></button>
     </div>
     <div class="header-sub">Innovation · Products · Collaboration · Funding</div>
   </div>
@@ -1372,6 +1400,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div style="padding:0 1.2rem;margin-bottom:1rem" id="profileTags"></div>
   <div>
     <div class="menu-item" onclick="nav('screenProjects')"><span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-folder"/></svg></span><span class="menu-label">My Projects</span><span class="menu-arrow">›</span></div>
+    <div class="menu-item" onclick="openUserTypeModal()"><span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-users"/></svg></span><span class="menu-label" id="userTypeLabel">User Type: Individual</span><span class="menu-arrow">›</span></div>
     <div class="menu-item" onclick="nav('screenDealDesk')"><span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-briefcase"/></svg></span><span class="menu-label">DealDesk — My Deals</span><span class="menu-arrow">›</span></div>
     <div class="menu-item" onclick="nav('screenDealDesk')"><span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-trending"/></svg></span><span class="menu-label">Investment Portfolio</span><span class="menu-arrow">›</span></div>
     <div class="menu-item" onclick="nav('screenInvestors')"><span class="menu-icon"><svg width="20" height="20" color="var(--teal)"><use href="#g-team"/></svg></span><span class="menu-label">Community Investors</span><span class="menu-arrow">›</span></div>
@@ -1406,7 +1435,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
-    <button class="nav-item" onclick="nav('screenMessages')"><div class="nav-icon nav-icon-wrap"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-message"/></svg><span class="notif-badge"></span></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1430,7 +1459,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
-    <button class="nav-item" onclick="nav('screenMessages')"><div class="nav-icon nav-icon-wrap"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-message"/></svg><span class="notif-badge"></span></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1454,7 +1483,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
-    <button class="nav-item active" onclick="nav('screenMessages')"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-message"/></svg></div><div class="nav-label">Messages</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1500,7 +1529,7 @@ body.dark-mode .setting-option{background:#1a2b2b;border-color:#1e3030;color:#8a
   <div class="bottom-nav">
     <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
     <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
-    <button class="nav-item active"><div class="nav-icon"><svg width="22" height="22" color="var(--teal)"><use href="#g-users"/></svg></div><div class="nav-label">Community</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
     <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
     <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
   </div>
@@ -1581,6 +1610,35 @@ function nameInitials(name) {
    Eliminates the DataCloneError caused by the SDK.
    ══════════════════════════════════════════════════ */
 
+/* ══════════════════════════════════════════════════════════════
+   SUPABASE SQL PATCH — run this in your Supabase SQL editor:
+   
+   alter table bz_posts add column if not exists author_id uuid;
+   alter table bz_posts add column if not exists author_name text;
+   alter table bz_posts add column if not exists reactions int default 0;
+   alter table bz_posts add column if not exists dislikes int default 0;
+   alter table bz_posts add column if not exists shares int default 0;
+   alter table bz_posts add column if not exists request_type text;
+   alter table bz_posts add column if not exists urgency_level text;
+   alter table bz_posts add column if not exists idea_stage text;
+   alter table bz_posts add column if not exists open_collab boolean default false;
+   alter table bz_posts add column if not exists time_period text;
+   alter table bz_posts add column if not exists milestone_type text;
+   alter table bz_posts add column if not exists result_achieved text;
+   alter table bz_posts add column if not exists mentions text;
+   alter table bz_posts add column if not exists visibility text default 'public';
+   alter table bz_posts add column if not exists quote_post_id text;
+   alter table bz_posts add column if not exists industry text;
+   
+   -- Also ensure bz_messages exists:
+   create table if not exists bz_messages (
+     id uuid default gen_random_uuid() primary key,
+     sender_id uuid, receiver_id uuid,
+     sender_name text, receiver_name text,
+     body text not null, read boolean default false,
+     created_at timestamptz default now()
+   );
+   ══════════════════════════════════════════════════════════════ */
 const SB_URL = 'https://tihfvrqbxpiktvlqqqjw.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaGZ2cnFieHBpa3R2bHFxcWp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NTI5NzMsImV4cCI6MjA4ODUyODk3M30.u2OXQSCMxOQX-rQDX7dV5e1SbXq7RkVlTaWU9n-F91M';
 
@@ -1605,25 +1663,32 @@ const SB_TABLES = {
   proposals:     'bz_proposals',
   wallet:        'bz_wallet',
   transactions:  'bz_transactions',
+  messages:      'bz_messages',
 };
 
 // Core fetch helper
-async function sbFetch(method, table, { filter='', body=null, single=false, count=false } = {}) {
+async function sbFetch(method, table, { filter='', body=null, single=false, count=false, returning=false } = {}) {
   let url = `${SB_URL}/rest/v1/${table}`;
   if (filter) url += '?' + filter;
-  const headers = sbHeaders(single ? { 'Accept': 'application/vnd.pgrst.object+json' } : count ? { 'Prefer': 'count=exact' } : {});
+  const extraHeaders = {};
+  if (single)     extraHeaders['Accept'] = 'application/vnd.pgrst.object+json';
+  if (count)      extraHeaders['Prefer'] = 'count=exact';
+  if (returning || method === 'POST') extraHeaders['Prefer'] = 'return=representation';
+  const headers = sbHeaders(extraHeaders);
   const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
-  // Abort any request that takes longer than 10s
+  // 12s timeout — iOS can be slow on cellular
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 12000);
   opts.signal = controller.signal;
   try {
     const res = await fetch(url, opts);
     clearTimeout(timeoutId);
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || err.hint || `HTTP ${res.status}`);
+      const errText = await res.text().catch(()=>'');
+      let errMsg = `HTTP ${res.status}`;
+      try { const j = JSON.parse(errText); errMsg = j.message || j.hint || j.details || errMsg; } catch(e){}
+      throw new Error(errMsg);
     }
     if (res.status === 204) return null;
     if (count) {
@@ -1634,7 +1699,7 @@ async function sbFetch(method, table, { filter='', body=null, single=false, coun
     return res.json().catch(() => null);
   } catch(e) {
     clearTimeout(timeoutId);
-    if(e.name === 'AbortError') throw new Error('Request timeout — check your connection');
+    if(e.name === 'AbortError') throw new Error('Request timed out — check your connection and try again');
     throw e;
   }
 }
@@ -1845,8 +1910,14 @@ function sbUserToLocal(row) {
 }
 
 async function register(name, email, phone, pass, roles, country, city, sector) {
-  const existing = await sbFetch('GET', 'bz_users', { filter: `email=eq.${encodeURIComponent(email.toLowerCase())}&select=id` });
-  if (existing && existing.length) throw new Error('Email already registered');
+  // Check email uniqueness
+  const existingEmail = await sbFetch('GET', 'bz_users', { filter: `email=eq.${encodeURIComponent(email.toLowerCase())}&select=id` });
+  if (existingEmail && existingEmail.length) throw new Error('This email is already registered. Please sign in or use a different email.');
+  // Check phone uniqueness (if provided)
+  if (phone && phone.trim()) {
+    const existingPhone = await sbFetch('GET', 'bz_users', { filter: `phone=eq.${encodeURIComponent(phone.trim())}&select=id` });
+    if (existingPhone && existingPhone.length) throw new Error('This phone number is already linked to an account. Please sign in or use a different number.');
+  }
   const row = { name, email: email.toLowerCase(), phone, password_hash: hashPass(pass), roles: JSON.stringify(roles), country, city, sector, score: 75, verified: false };
   const result = await sbFetch('POST', 'bz_users', { body: row, single: true });
   if (!result) throw new Error('Registration failed');
@@ -2002,12 +2073,21 @@ document.addEventListener('click', function(e){
 function nav(screenId){
   if(screenId==='screenMessages') setTimeout(loadMessages,0);
   if(screenId==='screenCommunity') setTimeout(loadCommunity,0);
+  // Keep message badge fresh
+  setTimeout(refreshMsgBadge, 200);
   if(screenId!=='screenChat' && chatPollTimer){ clearInterval(chatPollTimer); chatPollTimer=null; }
   
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const t=document.getElementById(screenId);
-  if(t){t.classList.add('active');t.scrollTop=0;}
-  const loaders={screenHome:loadHome,screenProjects:loadProjects,screenDealDesk:loadDealDesk,screenDealFlow:loadDealFlow,screenProfile:loadProfile,screenNotif:loadNotifications,screenTemplates:loadTemplates,screenMarket:loadMarket,screenPostBoard:loadPostBoard,screenAI:loadAI,screenInvestors:loadInvestors,screenMessages:loadMessages,screenCommunity:loadCommunity,screenKnowledge:loadKnowledgeHub,screenContribute:refreshContributeDataPoints,screenWallet:loadWallet};
+  if(t){
+    t.classList.add('active');
+    t.scrollTop=0;
+    // Also reset window scroll (needed on mobile browsers & iOS)
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+  }
+  const loaders={screenHome:loadHome,screenProjects:loadProjects,screenDealDesk:loadDealDesk,screenDealFlow:loadDealFlow,screenProfile:loadProfile,screenNotif:loadNotifications,screenTemplates:loadTemplates,screenMarket:loadMarket,screenPostBoard:loadPostBoard,screenAI:loadAI,screenInvestors:loadInvestors,screenMessages:loadMessages,screenCommunity:loadCommunity,screenKnowledge:loadKnowledgeHub,screenContribute:refreshContributeDataPoints,screenWallet:loadWallet,screenExplore:loadExplore,screenRequests:loadRequests,screenQA:loadQA};
   if(loaders[screenId]) {
     const result = loaders[screenId]();
     if(appSettings.language && appSettings.language !== 'English') {
@@ -2038,7 +2118,7 @@ function regStep1(){
   const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim(),pass=document.getElementById('regPass').value;
   let ok=true;
   if(!name){showErr('errName');ok=false;}else hideErr('errName');
-  if(!email||!email.includes('@')){showErr('errEmail');ok=false;}else hideErr('errEmail');
+  const emailRx=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;if(!email||!emailRx.test(email)){showErr('errEmail','Please enter a valid email address (e.g. name@example.com)');ok=false;}else hideErr('errEmail');
   if(pass.length<6){showErr('errPass');ok=false;}else hideErr('errPass');
   if(!ok) return;
   regData={name,email,phone:document.getElementById('regPhone').value,pass};
@@ -2106,6 +2186,8 @@ async function loadHome(){
   document.getElementById('aiBannerText').textContent=unread.length?unread.length+' new updates need your attention':'Ready to help grow your projects';
   document.getElementById('notifBadge').textContent=unread.length||'';
   document.getElementById('notifBadge').style.display=unread.length?'flex':'none';
+  // Update messages badge in header
+  try { const mb=document.getElementById('msgBadge'); if(mb){const unreadMsgs=(await dbGetAll('messages')).filter(m=>m.recipientId===currentUser?.id&&!m.read); mb.textContent=unreadMsgs.length||''; mb.style.display=unreadMsgs.length?'flex':'none';} } catch(e){}
 
   // Active Projects: mine first, then others, max 4
   const showProjects=[...myProjects,...allProjects.filter(p=>p.userId!==currentUser.id)].slice(0,4);
@@ -2926,14 +3008,14 @@ function filterMarket(f,el){document.querySelectorAll('#screenMarket .pills .pil
    ══════════════════════════════════════════════════════════════ */
 
 const POST_TYPES = {
-  Innovation:    { icon:'🔬', color:'#7c3aed', label:'Request for Innovation',   bg:'#f3f0ff' },
-  Product:       { icon:'📦', color:'#ea580c', label:'Request for Product',       bg:'#fff7ed' },
-  Collaborator:  { icon:'🤝', color:'#0d6e77', label:'Request for Collaborator',  bg:'#f0f9f9' },
-  Funding:       { icon:'💰', color:'#ca8a04', label:'Request for Funding',       bg:'#fefce8' },
-  Information:   { icon:'💡', color:'#2563eb', label:'Request for Information',   bg:'#eff6ff' },
-  Template:      { icon:'📋', color:'#16a34a', label:'Request for Template',      bg:'#f0fdf4' },
-  Opportunity:   { icon:'🚀', color:'#db2777', label:'Opportunity Post',          bg:'#fdf2f8' },
+  Opportunity:   { icon:'🟡', color:'#ca8a04', label:'Opportunity',        bg:'#fefce8', desc:'Announce deals, trade opportunities or commercial availability' },
+  Idea:          { icon:'🟣', color:'#7c3aed', label:'Idea / Innovation',   bg:'#f3f0ff', desc:'Share inventions, concepts or product visions' },
+  Journal:       { icon:'🟢', color:'#16a34a', label:'Productivity Journal',bg:'#f0fdf4', desc:'Document daily, weekly or milestone-based progress' },
+  Request:       { icon:'🟠', color:'#ea580c', label:'Request',             bg:'#fff7ed', desc:'Make requests to the ecosystem for items, services or people' },
+  Question:      { icon:'🔵', color:'#2563eb', label:'Question',            bg:'#eff6ff', desc:'Ask a knowledge question or request advice' },
 };
+
+const USER_TYPES = ['Individual','Entrepreneur / Startup','Developer / Maker','Expert / Consultant','Institution','Creator / Innovator'];
 
 let _pbFilter = 'All';
 
@@ -3051,21 +3133,21 @@ function filterPostBoard(f, el) {
 }
 
 function openCreatePost(type) {
+  if(!requireAuth('create a post')) return;
+  type = type || 'Opportunity';
+  const isFunding = (type === 'Funding');
   const typeOpts = Object.keys(POST_TYPES).map(t =>
     `<option value="${t}" ${t===type?'selected':''}>${POST_TYPES[t].icon} ${POST_TYPES[t].label}</option>`
   ).join('');
-  const isFunding = (type === 'Funding');
   openModal(`
-    <div class="modal-title">📝 Create Post</div>
+    <div class="modal-title">✏️ Create Post</div>
     <div class="form-group"><label class="form-label">Post Type</label>
-      <select class="form-input form-select" id="cpType" onchange="
-        const isFund=this.value==='Funding';
-        document.getElementById('cpFundingFields').style.display=isFund?'block':'none';
-        document.getElementById('cpBudgetWrap').style.display=isFund?'none':'block';
-      ">${typeOpts}</select>
+      <select class="form-input form-select" id="cpType" onchange="refreshCreatePostFields(this.value)">${typeOpts}</select>
     </div>
+    <div id="cpTypeDesc" style="font-size:.75rem;color:var(--text-dim);margin:-.4rem 0 .6rem;padding:0 .2rem">${POST_TYPES[type]?.desc||''}</div>
     <div class="form-group"><label class="form-label">Title</label>
       <input class="form-input" id="cpTitle" placeholder="e.g. Need palm oil drying machine"></div>
+    <div id="cpExtraFields"></div>
     <div class="form-group"><label class="form-label">Description</label>
       <textarea class="form-input form-textarea" id="cpDesc" placeholder="Describe your need, problem or opportunity in detail..." style="min-height:90px"></textarea></div>
     <div class="form-group"><label class="form-label">Industry</label>
@@ -3129,40 +3211,86 @@ async function confirmCreatePost() {
   const bud        = parseInt(document.getElementById('cpBudget')?.value)||0;
   const capital    = parseInt(document.getElementById('cpCapital')?.value)||0;
   const selfFunded = parseInt(document.getElementById('cpSelfFunded')?.value)||0;
-  const tags  = document.getElementById('cpTags')?.value.split(',').map(t=>t.trim()).filter(Boolean);
+  const tags     = document.getElementById('cpTags')?.value.split(',').map(t=>t.trim()).filter(Boolean);
+  const mentions = document.getElementById('cpMentions')?.value || '';
+  const visibility = document.getElementById('cpVisibility')?.value || 'public';
   if(!title){ toast('Please add a title','error'); return; }
   if(!desc){  toast('Please describe your post','error'); return; }
   if(type==='Funding' && capital<10000){ toast('Please set a capital target (minimum ₦10,000)','error'); return; }
   const amountRaised = type==='Funding' ? selfFunded : 0;
+  // Extra fields from adaptive form
+  const requestType = document.getElementById('cpRequestType')?.value || '';
+  const urgency     = document.getElementById('cpUrgency')?.value || '';
+  const ideaStage   = document.getElementById('cpStage')?.value || '';
+  const openCollab  = document.getElementById('cpOpenCollab')?.checked || false;
+  const period      = document.getElementById('cpPeriod')?.value || '';
+  const milestoneType = document.getElementById('cpMilestoneType')?.value || '';
+  const result      = document.getElementById('cpResult')?.value || '';
+
   const post = {
-    userId: currentUser.id, creatorName: currentUser.name,
-    type, title, description: desc, industry: ind, location: loc,
-    budget: type==='Funding' ? capital : bud,
-    capital: type==='Funding' ? capital : 0,
-    selfFunded: type==='Funding' ? selfFunded : 0,
-    amountRaised,   // total funded so far (self + investors)
-    tags, proposals: 0, status:'open',
-    timestamp: Date.now()
+    author_id:    currentUser.id,
+    author_name:  currentUser.name,
+    user_id:      currentUser.id,
+    type, title,
+    description:  desc,
+    industry:     ind,
+    location:     loc,
+    budget:       type==='Funding' ? capital : bud,
+    capital:      type==='Funding' ? capital : 0,
+    self_funded:  type==='Funding' ? selfFunded : 0,
+    amount_raised: amountRaised,
+    tags:         (tags||[]).join(','),
+    mentions,
+    visibility,
+    proposals:    0,
+    reactions:    0,
+    shares:       0,
+    status:       'open',
+    request_type: requestType,
+    urgency_level: urgency,
+    idea_stage:   ideaStage,
+    open_collab:  openCollab,
+    time_period:  period,
+    milestone_type: milestoneType,
+    result_achieved: result,
+    created_at:   new Date().toISOString()
   };
+
+  // Decide which screen to return to after posting
+  const returnScreen = type==='Question' ? 'screenQA'
+    : type==='Request'  ? 'screenRequests'
+    : type==='Journal'  ? 'screenExplore'
+    : 'screenPostBoard';
+
   try {
-    await dbAdd('posts', post);
-    // Give the user 5 BZN for posting
-    _markEarned('post'); await _bznCredit(currentUser.id, 5, 'Posted: '+title);
-    // Update reputation
-    await _addReputation(currentUser.id, 3, 'Created a post');
+    await sbFetch('POST','bz_posts',{body:post});
+    _markEarned('post');
+    try { await _bznCredit(currentUser.id, 5, 'Posted: '+title); } catch(e){}
+    try { await _addReputation(currentUser.id, 3, 'Created a post'); } catch(e){}
     closeModal();
     toast('✅ Post published!', 'success');
-    nav('screenPostBoard');
+    nav(returnScreen);
+    setTimeout(()=>{
+      if(returnScreen==='screenQA') loadQA();
+      else if(returnScreen==='screenRequests') loadRequests();
+      else if(returnScreen==='screenExplore') loadExplore();
+      else loadPostBoard();
+    }, 350);
   } catch(e) {
-    // If table doesn't exist yet, store in localStorage fallback
+    // localStorage fallback
     const key = 'bizny_posts_local';
     const local = JSON.parse(localStorage.getItem(key)||'[]');
     post.id = 'local_'+Date.now();
     local.unshift(post);
     localStorage.setItem(key, JSON.stringify(local));
     closeModal();
-    toast('✅ Post published!', 'success');
-    nav('screenPostBoard');
+    toast('✅ Post saved locally!', 'success');
+    nav(returnScreen);
+    setTimeout(()=>{
+      if(returnScreen==='screenQA') loadQA();
+      else if(returnScreen==='screenRequests') loadRequests();
+      else loadPostBoard();
+    }, 350);
   }
 }
 
@@ -3344,6 +3472,76 @@ async function openPost(postId) {
         : `<div style="text-align:center;padding:1.5rem;color:var(--text-dim);font-size:.82rem">No proposals yet. Be the first to respond!</div>`
       }
     </div>`;
+}
+
+/* ═══ REACTIONS ═════════════════════════════════════════════════ */
+async function reactPost(type, postId) {
+  if(!requireAuth('react to this post')) return;
+  try {
+    // Get current post
+    const posts = await sbFetch('GET','bz_posts',{filter:`id=eq.${postId}&select=reactions,dislikes`}).catch(()=>[]);
+    const p = (posts||[])[0] || {};
+    const field = type==='like' ? 'reactions' : 'dislikes';
+    const newVal = (p[field]||0) + 1;
+    await sbFetch('PATCH','bz_posts',{filter:`id=eq.${postId}`,body:{[field]:newVal}});
+    // Update UI counter
+    if(type==='like') {
+      const el = document.getElementById('likeCnt_'+postId);
+      if(el) el.textContent = newVal;
+    }
+    toast(type==='like'?'👍 Liked!':'👎 Noted','success');
+  } catch(e){ toast('Could not react: '+e.message,'error'); }
+}
+
+function sharePost(postId, title) {
+  const url = window.location.href.split('?')[0]+'?post='+postId;
+  if(navigator.share) {
+    navigator.share({title:'Bizny: '+title, text:title, url}).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(url).catch(()=>{});
+    toast('🔗 Link copied!','success');
+  }
+  // Increment shares count async
+  sbFetch('GET','bz_posts',{filter:`id=eq.${postId}&select=shares`}).then(rows=>{
+    const cur = ((rows||[])[0]||{}).shares||0;
+    sbFetch('PATCH','bz_posts',{filter:`id=eq.${postId}`,body:{shares:cur+1}});
+  }).catch(()=>{});
+}
+
+function quoteSharePost(postId, title) {
+  if(!requireAuth('quote-share a post')) return;
+  openModal(`<div class="modal-title">💬 Quote & Share</div>
+    <div style="background:var(--surface);border-left:3px solid var(--teal);padding:.7rem .9rem;border-radius:0 8px 8px 0;margin-bottom:.8rem;font-size:.8rem;color:var(--text-mid);font-style:italic">"${title}"</div>
+    <div class="form-group"><label class="form-label">Your commentary</label>
+      <textarea class="form-input" id="quoteCommentary" rows="3" placeholder="What's your take on this?..." style="resize:none"></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-teal" onclick="submitQuoteShare('${postId}','${title.replace(/'/g,"\\'")}')">Share →</button>
+    </div>`);
+}
+
+async function submitQuoteShare(originalPostId, originalTitle) {
+  const commentary = document.getElementById('quoteCommentary')?.value.trim();
+  if(!commentary) { toast('Add your commentary first','error'); return; }
+  closeModal();
+  try {
+    await sbFetch('POST','bz_posts',{body:{
+      author_id: currentUser.id,
+      mentions: mentions,
+      visibility: visibility,
+      author_name: currentUser.name,
+      type: 'Journal',
+      title: '💬 Re: '+originalTitle.slice(0,50),
+      description: commentary,
+      quote_post_id: originalPostId,
+      tags: '',
+      created_at: new Date().toISOString()
+    }});
+    // increment original shares
+    sharePost(originalPostId, originalTitle);
+    toast('✅ Quote shared to your profile!','success');
+  } catch(e){ toast('Could not share: '+e.message,'error'); }
 }
 
 async function confirmDeletePost(postId) {
@@ -6586,38 +6784,48 @@ async function saveEditProject(id){
 
 // ── MESSAGING ──────────────────────────────────────────────────────────────
 
-let chatPartner = null;
-let activeChatId = null;
+/* ══════ MESSAGING ══════ */
 let chatPollTimer = null;
-let lastMsgCount = 0;
+let lastMsgCount  = 0;
+let chatPartner   = null;
+let activeChatId  = null;
 
-function getChatId(a, b) {
-  return [a, b].sort().join('__');
-}
+function getChatId(a, b) { return [a, b].sort().join('__'); }
 
+// ─── Conversations list ──────────────────────────────────────────
 async function loadMessages() {
   const list = document.getElementById('conversationsList');
   if (!list) return;
-  list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)">Loading…</div>';
+
+  if (!currentUser) {
+    list.innerHTML = `
+      <div class="empty">
+        <div style="font-size:2.5rem;margin-bottom:.8rem">💬</div>
+        <h3>Sign in to message</h3>
+        <p>Create a free account to chat with founders, investors and collaborators</p>
+        <button class="btn btn-teal" style="margin-top:1rem" onclick="nav('screenLogin')">Sign In</button>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = '<div style="text-align:center;padding:2.5rem;color:var(--text-dim)"><div class="typing-dots"><span></span><span></span><span></span></div><p style="margin-top:.6rem;font-size:.8rem">Loading conversations…</p></div>';
 
   try {
     const uid = currentUser.id;
-    // Get all messages involving current user
-    const sent = await sbFetch('GET', 'bz_messages', {
-      filter: `sender_id=eq.${uid}&order=created_at.desc`
-    }) || [];
-    const received = await sbFetch('GET', 'bz_messages', {
-      filter: `receiver_id=eq.${uid}&order=created_at.desc`
-    }) || [];
+    const [sent, received] = await Promise.all([
+      sbFetch('GET', 'bz_messages', { filter: `sender_id=eq.${uid}&order=created_at.desc&limit=200` }).catch(()=>[]),
+      sbFetch('GET', 'bz_messages', { filter: `receiver_id=eq.${uid}&order=created_at.desc&limit=200` }).catch(()=>[])
+    ]);
 
-    const allMsgs = [...sent, ...received];
+    const allMsgs = [...(sent||[]), ...(received||[])];
 
-    // Group by conversation partner
+    // Group by conversation partner — keep only the latest msg per partner
     const convMap = {};
     for (const m of allMsgs) {
-      const partnerId = m.sender_id === uid ? m.receiver_id : m.sender_id;
+      const partnerId   = m.sender_id === uid ? m.receiver_id : m.sender_id;
       const partnerName = m.sender_id === uid ? (m.receiver_name || 'User') : (m.sender_name || 'User');
-      if (!convMap[partnerId] || new Date(m.created_at) > new Date(convMap[partnerId].last.created_at)) {
+      const existing    = convMap[partnerId];
+      if (!existing || new Date(m.created_at) > new Date(existing.last.created_at)) {
         convMap[partnerId] = { partnerId, partnerName, last: m };
       }
     }
@@ -6626,31 +6834,31 @@ async function loadMessages() {
       new Date(b.last.created_at) - new Date(a.last.created_at)
     );
 
-    if (convs.length === 0) {
+    if (!convs.length) {
       list.innerHTML = `
         <div class="empty">
-          <div class="empty-icon" style="font-size:2rem">💬</div>
+          <div style="font-size:2.5rem;margin-bottom:.8rem">💬</div>
           <h3>No conversations yet</h3>
-          <p>Message a team member, investor or community member</p>
-          <button class="btn-primary" style="margin-top:1rem;font-size:.85rem;padding:.6rem 1.4rem" onclick="openNewMessageModal()">Start a conversation</button>
+          <p>Reach out to a founder, investor or collaborator</p>
+          <button class="btn btn-teal" style="margin-top:1rem" onclick="openNewMessageModal()">Start a conversation</button>
         </div>`;
       return;
     }
 
-    list.innerHTML = convs.map(c => {
-      const isUnread = c.last.receiver_id === uid && !c.last.read;
-      const preview = c.last.body.length > 48 ? c.last.body.slice(0, 48) + '…' : c.last.body;
-      const timeStr = msgTimeAgo(c.last.created_at);
-      const initials = nameInitials(c.partnerName);
-      const bg = nameColor(c.partnerName);
+    list.innerHTML = convs.map(conv => {
+      const isUnread  = conv.last.receiver_id === uid && !conv.last.read;
+      const preview   = (conv.last.body||'').length > 50 ? conv.last.body.slice(0,50)+'…' : (conv.last.body||'');
+      const timeStr   = msgTimeAgo(conv.last.created_at);
+      const initials  = nameInitials(conv.partnerName);
+      const bg        = nameColor(conv.partnerName);
       return `
-        <div onclick="openChat('${c.partnerId}','${c.partnerName.replace(/'/g,"\\'")}','${c.last.receiver_name||''}','${c.last.sender_name||''}')"
-          style="display:flex;align-items:center;gap:.8rem;padding:.85rem .5rem;border-bottom:1px solid var(--border);cursor:pointer;">
-          <div style="width:42px;height:42px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:.88rem;flex-shrink:0">${initials}</div>
+        <div onclick="openChat('${conv.partnerId}','${(conv.partnerName).replace(/'/g,"\'")}')"
+          style="display:flex;align-items:center;gap:.85rem;padding:.9rem .75rem;border-bottom:1px solid var(--border);cursor:pointer;background:${isUnread?'rgba(0,178,169,.04)':'transparent'}">
+          <div style="width:44px;height:44px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:.9rem;flex-shrink:0">${initials}</div>
           <div style="flex:1;min-width:0">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-weight:${isUnread?'700':'600'};color:var(--text);font-size:.9rem">${c.partnerName}</span>
-              <span style="font-size:.7rem;color:var(--text-dim)">${timeStr}</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.2rem">
+              <span style="font-weight:${isUnread?'700':'600'};color:var(--text);font-size:.9rem">${conv.partnerName}</span>
+              <span style="font-size:.7rem;color:var(--text-dim);flex-shrink:0;margin-left:.5rem">${timeStr}</span>
             </div>
             <div style="font-size:.78rem;color:${isUnread?'var(--text)':'var(--text-dim)'};font-weight:${isUnread?'600':'400'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${preview}</div>
           </div>
@@ -6659,165 +6867,174 @@ async function loadMessages() {
     }).join('');
 
   } catch(e) {
-    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-dim)">Could not load messages.<br><small>${e.message}</small></div>`;
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-dim)">Could not load conversations<br><small style="opacity:.6">${e.message}</small><br><button class="btn btn-outline" style="margin-top:1rem;font-size:.8rem" onclick="loadMessages()">Retry</button></div>`;
   }
 }
 
-function msgTimeAgo(iso) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h`;
-  return `${Math.floor(hrs/24)}d`;
-}
-
+// ─── New message modal ────────────────────────────────────────────
 async function openNewMessageModal() {
-  // Load all users except self
-  openModal(`<div class="modal-title">New Message</div>
-    <div class="form-group"><label class="form-label">Search user</label>
-    <input class="form-input" id="userSearchInput" placeholder="Name or email…" oninput="searchUsersForMsg(this.value)">
+  if (!currentUser) { requireAuth('send a message'); return; }
+  openModal(`
+    <div class="modal-title">💬 New Message</div>
+    <div class="form-group">
+      <label class="form-label">Find a user</label>
+      <input class="form-input" id="userSearchInput" placeholder="Type a name…" oninput="searchUsersForMsg(this.value)" autocomplete="off">
     </div>
-    <div id="userSearchResults" style="max-height:220px;overflow-y:auto"></div>
-    <button class="btn btn-outline" style="margin-top:.8rem" onclick="closeModal()">Cancel</button>`);
+    <div id="userSearchResults" style="max-height:240px;overflow-y:auto;margin-top:.25rem"></div>
+    <button class="btn btn-outline" style="margin-top:.8rem;width:100%" onclick="closeModal()">Cancel</button>`);
+  setTimeout(()=>{ const el=document.getElementById('userSearchInput'); if(el) el.focus(); }, 150);
 }
 
 async function searchUsersForMsg(q) {
   const el = document.getElementById('userSearchResults');
   if (!el) return;
-  if (q.length < 2) { el.innerHTML = ''; return; }
+  q = q.trim();
+  if (q.length < 2) { el.innerHTML = '<div style="padding:.5rem;color:var(--text-dim);font-size:.8rem">Type at least 2 characters…</div>'; return; }
+  el.innerHTML = '<div style="padding:.5rem;color:var(--text-dim);font-size:.8rem">Searching…</div>';
   try {
     const rows = await sbFetch('GET', 'bz_users', {
-      filter: `name=ilike.*${encodeURIComponent(q)}*&limit=10`
+      filter: `name=ilike.*${encodeURIComponent(q)}*&limit=12`
     }) || [];
     const filtered = rows.filter(r => r.id !== currentUser.id);
     if (!filtered.length) { el.innerHTML = '<div style="padding:.6rem;color:var(--text-dim);font-size:.82rem">No users found</div>'; return; }
     el.innerHTML = filtered.map(u => `
-      <div onclick="startConvWith('${u.id}','${(u.name||'User').replace(/'/g,"\\'")}');closeModal()"
-        style="display:flex;align-items:center;gap:.7rem;padding:.65rem .4rem;border-bottom:1px solid var(--border);cursor:pointer">
-        <div style="width:36px;height:36px;border-radius:50%;background:${nameColor(u.name||'')};display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:.8rem;flex-shrink:0">${nameInitials(u.name||'U')}</div>
+      <div onclick="closeModal();openChat('${u.id}','${(u.name||'User').replace(/'/g,"\'")}')"
+        style="display:flex;align-items:center;gap:.75rem;padding:.65rem .4rem;border-bottom:1px solid var(--border);cursor:pointer">
+        <div style="width:38px;height:38px;border-radius:50%;background:${nameColor(u.name||'')};display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:.82rem;flex-shrink:0">${nameInitials(u.name||'U')}</div>
         <div>
           <div style="font-weight:600;color:var(--text);font-size:.88rem">${u.name||'User'}</div>
-          <div style="font-size:.73rem;color:var(--text-dim)">${u.city||''} ${u.sector||''}</div>
+          <div style="font-size:.73rem;color:var(--text-dim)">${[u.city,u.sector].filter(Boolean).join(' · ')}</div>
         </div>
       </div>`).join('');
   } catch(e) {
-    el.innerHTML = `<div style="padding:.6rem;color:var(--text-dim);font-size:.82rem">Error: ${e.message}</div>`;
+    el.innerHTML = `<div style="padding:.6rem;color:var(--text-dim);font-size:.82rem">Error searching: ${e.message}</div>`;
   }
 }
 
-function startConvWith(partnerId, partnerName) {
-  openChat(partnerId, partnerName);
-}
+function startConvWith(partnerId, partnerName) { openChat(partnerId, partnerName); }
 
+// ─── Open a chat ──────────────────────────────────────────────────
 async function openChat(partnerId, partnerName) {
-  chatPartner = { id: partnerId, name: partnerName };
+  if (!currentUser) { requireAuth('send a message'); return; }
+  chatPartner  = { id: partnerId, name: partnerName };
   activeChatId = getChatId(currentUser.id, partnerId);
 
-  const nameEl = document.getElementById('chatPartnerName');
+  // Set header
+  const nameEl   = document.getElementById('chatPartnerName');
   const avatarEl = document.getElementById('chatPartnerAvatar');
   const statusEl = document.getElementById('chatPartnerStatus');
-  if (nameEl) nameEl.textContent = partnerName;
+  if (nameEl)   nameEl.textContent   = partnerName;
   if (avatarEl) { avatarEl.textContent = nameInitials(partnerName); avatarEl.style.background = nameColor(partnerName); }
   if (statusEl) statusEl.textContent = 'Active on Bizny';
 
   nav('screenChat');
   await loadChatMessages();
 
-  // Mark received msgs as read
+  // Mark received as read
   try {
     await sbFetch('PATCH', 'bz_messages', {
       filter: `sender_id=eq.${partnerId}&receiver_id=eq.${currentUser.id}&read=eq.false`,
       body: { read: true }
     });
-  } catch(e) {}
+  } catch(e) { /* non-critical */ }
 
-  // Poll for new messages every 5s
+  // Poll every 5s
   if (chatPollTimer) clearInterval(chatPollTimer);
   chatPollTimer = setInterval(pollChatMessages, 5000);
 }
 
+// ─── Load chat messages ───────────────────────────────────────────
 async function loadChatMessages() {
   const msgList = document.getElementById('chatMsgList');
-  if (!msgList) return;
+  if (!msgList || !chatPartner || !currentUser) return;
 
   try {
     const uid = currentUser.id;
     const pid = chatPartner.id;
-    const sent = await sbFetch('GET', 'bz_messages', {
-      filter: `sender_id=eq.${uid}&receiver_id=eq.${pid}&order=created_at.asc`
-    }) || [];
-    const received = await sbFetch('GET', 'bz_messages', {
-      filter: `sender_id=eq.${pid}&receiver_id=eq.${uid}&order=created_at.asc`
-    }) || [];
 
-    const msgs = [...sent, ...received].sort((a, b) =>
-      new Date(a.created_at) - new Date(b.created_at)
-    );
+    const [sent, received] = await Promise.all([
+      sbFetch('GET', 'bz_messages', { filter: `sender_id=eq.${uid}&receiver_id=eq.${pid}&order=created_at.asc&limit=200` }).catch(()=>[]),
+      sbFetch('GET', 'bz_messages', { filter: `sender_id=eq.${pid}&receiver_id=eq.${uid}&order=created_at.asc&limit=200` }).catch(()=>[])
+    ]);
 
+    const msgs = [...(sent||[]), ...(received||[])].sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
     lastMsgCount = msgs.length;
 
-    if (msgs.length === 0) {
-      msgList.innerHTML = `<div style="text-align:center;color:var(--text-dim);font-size:.82rem;padding:2rem 1rem">No messages yet.<br>Say hello! 👋</div>`;
+    if (!msgs.length) {
+      msgList.innerHTML = `<div style="text-align:center;color:var(--text-dim);font-size:.83rem;padding:3rem 1rem;line-height:1.7">No messages yet<br>👋 Say hello!</div>`;
       return;
     }
 
+    // Group messages by date
+    let lastDate = '';
     msgList.innerHTML = msgs.map(m => {
-      const isMine = m.sender_id === uid;
-      const time = msgTimeAgo(m.created_at);
-      return `<div style="display:flex;flex-direction:column;align-items:${isMine?'flex-end':'flex-start'}">
-        <div style="max-width:75%;padding:.55rem .85rem;border-radius:${isMine?'16px 16px 4px 16px':'16px 16px 16px 4px'};
-          background:${isMine?'var(--teal)':'white'};color:${isMine?'white':'var(--text)'};
-          font-size:.85rem;line-height:1.45;box-shadow:0 1px 3px rgba(0,0,0,.08)">${m.body}</div>
-        <div style="font-size:.65rem;color:var(--text-dim);margin-top:2px;padding:0 4px">${time}</div>
+      const isMine  = m.sender_id === uid;
+      const time    = msgTimeAgo(m.created_at);
+      const dateStr = new Date(m.created_at).toLocaleDateString('en-NG',{weekday:'short',month:'short',day:'numeric'});
+      const dateSep = dateStr !== lastDate ? `<div style="text-align:center;margin:.6rem 0"><span style="font-size:.68rem;color:var(--text-dim);background:var(--border);padding:.2rem .7rem;border-radius:10px">${dateStr}</span></div>` : '';
+      lastDate = dateStr;
+      return `${dateSep}<div style="display:flex;flex-direction:column;align-items:${isMine?'flex-end':'flex-start'};margin-bottom:.15rem">
+        <div style="max-width:78%;padding:.55rem .9rem;border-radius:${isMine?'16px 16px 4px 16px':'16px 16px 16px 4px'};background:${isMine?'var(--teal)':'white'};color:${isMine?'white':'var(--text)'};font-size:.85rem;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.08);word-break:break-word">${m.body}</div>
+        <div style="font-size:.63rem;color:var(--text-dim);margin-top:2px;padding:0 4px">${time}${isMine&&m.read?' · ✓✓':''}</div>
       </div>`;
     }).join('');
 
     msgList.scrollTop = msgList.scrollHeight;
+
   } catch(e) {
     const msgList = document.getElementById('chatMsgList');
-    if (msgList) msgList.innerHTML = `<div style="text-align:center;color:var(--text-dim);font-size:.82rem;padding:2rem">Could not load messages.<br><small>${e.message}</small></div>`;
+    if (msgList) msgList.innerHTML = `<div style="text-align:center;color:var(--text-dim);font-size:.82rem;padding:2rem">Could not load messages<br><button class="btn btn-outline" style="margin-top:.8rem;font-size:.8rem" onclick="loadChatMessages()">Retry</button></div>`;
   }
 }
 
+// ─── Poll for new messages ────────────────────────────────────────
 async function pollChatMessages() {
-  if (!chatPartner) return;
-  const uid = currentUser.id;
-  const pid = chatPartner.id;
+  if (!chatPartner || !currentUser) return;
   try {
-    const received = await sbFetch('GET', 'bz_messages', {
-      filter: `sender_id=eq.${pid}&receiver_id=eq.${uid}&order=created_at.asc`
-    }) || [];
-    const sent = await sbFetch('GET', 'bz_messages', {
-      filter: `sender_id=eq.${uid}&receiver_id=eq.${pid}&order=created_at.asc`
-    }) || [];
-    const total = sent.length + received.length;
+    const uid = currentUser.id;
+    const pid = chatPartner.id;
+    const [sent, received] = await Promise.all([
+      sbFetch('GET', 'bz_messages', { filter: `sender_id=eq.${uid}&receiver_id=eq.${pid}&order=created_at.asc&limit=200` }).catch(()=>[]),
+      sbFetch('GET', 'bz_messages', { filter: `sender_id=eq.${pid}&receiver_id=eq.${uid}&order=created_at.asc&limit=200` }).catch(()=>[])
+    ]);
+    const total = ((sent||[]).length) + ((received||[]).length);
     if (total !== lastMsgCount) {
       await loadChatMessages();
-      // mark new received as read
-      await sbFetch('PATCH', 'bz_messages', {
+      // Mark new received as read
+      sbFetch('PATCH', 'bz_messages', {
         filter: `sender_id=eq.${pid}&receiver_id=eq.${uid}&read=eq.false`,
         body: { read: true }
-      });
+      }).catch(()=>{});
     }
   } catch(e) {}
 }
 
+// ─── Send message ─────────────────────────────────────────────────
 async function sendChatMessage() {
   const input = document.getElementById('chatMsgInput');
-  if (!input) return;
+  if (!input || !chatPartner || !currentUser) return;
   const body = input.value.trim();
-  if (!body || !chatPartner) return;
+  if (!body) return;
+
   input.value = '';
   input.focus();
+
+  // Optimistic bubble
+  const msgList = document.getElementById('chatMsgList');
+  if (msgList) {
+    const temp = document.createElement('div');
+    temp.style.cssText = 'display:flex;flex-direction:column;align-items:flex-end;margin-bottom:.15rem;opacity:.6';
+    temp.innerHTML = `<div style="max-width:78%;padding:.55rem .9rem;border-radius:16px 16px 4px 16px;background:var(--teal);color:white;font-size:.85rem;line-height:1.5;word-break:break-word">${body}</div><div style="font-size:.63rem;color:var(--text-dim);margin-top:2px;padding:0 4px">sending…</div>`;
+    msgList.appendChild(temp);
+    msgList.scrollTop = msgList.scrollHeight;
+  }
 
   try {
     await sbFetch('POST', 'bz_messages', {
       body: {
-        sender_id: currentUser.id,
-        receiver_id: chatPartner.id,
-        sender_name: currentUser.name,
+        sender_id:     currentUser.id,
+        receiver_id:   chatPartner.id,
+        sender_name:   currentUser.name,
         receiver_name: chatPartner.name,
         body,
         read: false
@@ -6825,9 +7042,50 @@ async function sendChatMessage() {
     });
     await loadChatMessages();
   } catch(e) {
-    toast('Failed to send: ' + e.message, 'error');
+    toast('Send failed: ' + e.message, 'error');
     input.value = body;
+    await loadChatMessages();
   }
+}
+
+// ─── Time / color helpers ─────────────────────────────────────────
+function msgTimeAgo(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1)  return 'just now';
+  if (mins < 60) return `${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)  return `${hrs}h`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7)  return `${days}d`;
+  return new Date(iso).toLocaleDateString('en-NG',{day:'numeric',month:'short'});
+}
+
+function nameInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return parts.length >= 2 ? (parts[0][0]+parts[1][0]).toUpperCase() : parts[0].slice(0,2).toUpperCase();
+}
+
+function nameColor(name) {
+  const colors = ['#00b2a9','#2c5364','#e67e22','#8e44ad','#27ae60','#2980b9','#c0392b','#16a085'];
+  let hash = 0;
+  for (let i = 0; i < (name||'').length; i++) hash = (name.charCodeAt(i) + hash * 31) & 0xffffffff;
+  return colors[Math.abs(hash) % colors.length];
+}
+
+async function refreshMsgBadge() {
+  try {
+    const mb = document.getElementById('msgBadge');
+    if (!mb || !currentUser) { if(mb){mb.style.display='none';} return; }
+    const msgs = await sbFetch('GET', 'bz_messages', {
+      filter: `receiver_id=eq.${currentUser.id}&read=eq.false&select=id`
+    }).catch(()=>[]);
+    const count = (msgs||[]).length;
+    mb.textContent = count || '';
+    mb.style.display = count ? 'flex' : 'none';
+  } catch(e) {}
 }
 
 function loadCommunity() {
@@ -7463,6 +7721,18 @@ async function boot(){
 
 
 
+// ── Message badge ─────────────────────────────────────────────
+async function refreshMsgBadge() {
+  try {
+    const mb = document.getElementById('msgBadge');
+    if (!mb || !currentUser) return;
+    const msgs = await dbGetByIndex('messages','recipientId', currentUser.id).catch(()=>[]);
+    const unread = (msgs||[]).filter(m=>!m.read).length;
+    mb.textContent = unread || '';
+    mb.style.display = unread ? 'flex' : 'none';
+  } catch(e){}
+}
+
 // ── Guest mode ─────────────────────────────────────────────────
 let _guestMode = false;
 
@@ -7517,6 +7787,341 @@ function onbSkip() {
 }
 
 boot();
+
+/* ══════ EXPLORE / DISCOVERY ══════ */
+let _exploreFilter = 'All';
+let _exploreSort   = 'recent';
+let _exploreQuery  = '';
+
+function setExploreFilter(val, btn) {
+  _exploreFilter = val;
+  document.querySelectorAll('[id^="exPill_"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  loadExplore();
+}
+function setExploreSort(val, btn) {
+  _exploreSort = val;
+  document.querySelectorAll('[id^="exSort_"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  loadExplore();
+}
+function searchExplore(q) { _exploreQuery = q; loadExplore(); }
+
+async function loadExplore() {
+  const el = document.getElementById('exploreList');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  try {
+    let filter = 'order=created_at.desc&limit=60';
+    if(_exploreFilter !== 'All') filter += `&type=eq.${_exploreFilter}`;
+    const posts = await sbFetch('GET','bz_posts',{filter}).catch(()=>[]);
+    let list = (posts||[]);
+    // search
+    if(_exploreQuery.trim()) {
+      const q = _exploreQuery.toLowerCase();
+      list = list.filter(p=>(p.title||'').toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q)||(p.tags||'').toLowerCase().includes(q));
+    }
+    // sort
+    if(_exploreSort==='trending') list.sort((a,b)=>((b.reactions||0)+(b.proposals||0))-((a.reactions||0)+(a.proposals||0)));
+    else if(_exploreSort==='shared') list.sort((a,b)=>(b.shares||0)-(a.shares||0));
+    if(!list.length){
+      el.innerHTML='<div class="empty"><div style="font-size:2rem">🔎</div><h3>No posts found</h3><p>Try a different filter or search term</p></div>';
+      return;
+    }
+    el.innerHTML = list.map(p=>renderExploreCard(p)).join('');
+  } catch(e){
+    el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--text-dim)">Could not load<br><small>${e.message}</small></div>`;
+  }
+}
+
+function renderExploreCard(p) {
+  const pt  = POST_TYPES[p.type] || POST_TYPES.Opportunity;
+  const ago = msgTimeAgo(p.created_at);
+  const tags = (p.tags||'').split(',').filter(Boolean).map(t=>`<span style="font-size:.65rem;background:var(--border);border-radius:10px;padding:.15rem .45rem;color:var(--text-dim)">${t.trim()}</span>`).join(' ');
+  return `<div onclick="openPost('${p.id}')" style="background:white;border-radius:14px;padding:.85rem;margin-bottom:.6rem;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem">
+      <span style="font-size:.75rem;font-weight:700;color:${pt.color};background:${pt.bg};border-radius:8px;padding:.15rem .5rem">${pt.icon} ${pt.label}</span>
+      <span style="font-size:.68rem;color:var(--text-dim);margin-left:auto">${ago}</span>
+    </div>
+    <div style="font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.3rem">${p.title||'Untitled'}</div>
+    <div style="font-size:.78rem;color:var(--text-dim);line-height:1.5;margin-bottom:.4rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${p.description||''}</div>
+    ${tags?`<div style="display:flex;flex-wrap:wrap;gap:.2rem;margin-top:.3rem">${tags}</div>`:''}
+    <div style="display:flex;align-items:center;gap:.8rem;margin-top:.5rem;font-size:.68rem;color:var(--text-dim)">
+      <span>👤 ${p.author_name||'User'}</span>
+      <span>💬 ${p.proposals||0}</span>
+      <span>❤️ ${p.reactions||0}</span>
+    </div>
+  </div>`;
+}
+
+/* ══════ REQUEST BOARD ══════ */
+let _requestFilter = 'All';
+
+function setRequestFilter(val, btn) {
+  _requestFilter = val;
+  document.querySelectorAll('[id^="rqPill_"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  loadRequests();
+}
+
+async function loadRequests() {
+  const el = document.getElementById('requestsList');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  try {
+    let filter = 'type=eq.Request&order=created_at.desc&limit=50';
+    const sbPosts = await sbFetch('GET','bz_posts',{filter}).catch(()=>[]);
+    const localAll = JSON.parse(localStorage.getItem('bizny_posts_local')||'[]');
+    const localR = localAll.filter(p=>p.type==='Request');
+    const sbIds = new Set((sbPosts||[]).map(p=>String(p.id)));
+    const merged = [...(sbPosts||[]), ...localR.filter(p=>!sbIds.has(String(p.id)))];
+    let list = merged;
+    if(_requestFilter !== 'All') {
+      list = list.filter(p=>(p.request_type||'').toLowerCase()===_requestFilter.toLowerCase());
+    }
+    if(!list.length){
+      el.innerHTML='<div class="empty"><div style="font-size:2rem">📢</div><h3>No open requests</h3><p>Be the first to post a request</p><button class="btn btn-teal" style="margin-top:1rem" onclick="openCreatePost(\x27Request\x27)">Post Request</button></div>';
+      return;
+    }
+    el.innerHTML = list.map(p=>renderRequestCard(p)).join('');
+  } catch(e){
+    el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--text-dim)">Could not load<br><small>${e.message}</small></div>`;
+  }
+}
+
+function renderRequestCard(p) {
+  const ago = msgTimeAgo(p.created_at);
+  const urgencyColor = {'High':'#dc2626','Medium':'#d97706','Low':'#16a34a'}[p.urgency_level]||'#6b7280';
+  return `<div onclick="openPost('${p.id}')" style="background:white;border-radius:14px;padding:.9rem;margin-bottom:.6rem;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;border-left:4px solid #ea580c">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
+      <span style="font-size:.72rem;font-weight:700;color:#ea580c;background:#fff7ed;border-radius:8px;padding:.15rem .5rem">🟠 ${p.request_type||'Request'}</span>
+      ${p.urgency_level?`<span style="font-size:.65rem;font-weight:700;color:${urgencyColor};background:${urgencyColor}22;border-radius:8px;padding:.15rem .45rem">${p.urgency_level} urgency</span>`:''}
+      <span style="font-size:.68rem;color:var(--text-dim);margin-left:auto">${ago}</span>
+    </div>
+    <div style="font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.3rem">${p.title||'Untitled'}</div>
+    <div style="font-size:.78rem;color:var(--text-dim);line-height:1.5;margin-bottom:.4rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${p.description||''}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
+      <span style="font-size:.68rem;color:var(--text-dim)">👤 ${p.author_name||'User'}</span>
+      <button onclick="event.stopPropagation();if(requireAuth('respond to this request')) openProposalModal('${p.id}')" style="font-size:.72rem;font-weight:700;color:var(--teal);background:rgba(0,178,169,.08);border:1.5px solid var(--teal);border-radius:8px;padding:.2rem .7rem;cursor:pointer;font-family:'Montserrat',sans-serif">Respond →</button>
+    </div>
+  </div>`;
+}
+
+/* ══════ Q&A ══════ */
+let _qaSort = 'recent';
+
+function setQASort(val, btn) {
+  _qaSort = val;
+  document.querySelectorAll('[id^="qaPill_"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  loadQA();
+}
+
+async function loadQA() {
+  const el = document.getElementById('qaList');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  try {
+    let filter = 'type=eq.Question&order=created_at.desc&limit=50';
+    const sbPosts = await sbFetch('GET','bz_posts',{filter}).catch(()=>[]);
+    const localAll = JSON.parse(localStorage.getItem('bizny_posts_local')||'[]');
+    const localQ = localAll.filter(p=>p.type==='Question');
+    const sbIds = new Set((sbPosts||[]).map(p=>String(p.id)));
+    const merged = [...(sbPosts||[]), ...localQ.filter(p=>!sbIds.has(String(p.id)))];
+    let list = merged;
+    if(_qaSort==='votes') list.sort((a,b)=>(b.reactions||0)-(a.reactions||0));
+    else if(_qaSort==='answered') list = list.filter(p=>(p.proposals||0)>0);
+    if(!list.length){
+      el.innerHTML='<div class="empty"><div style="font-size:2rem">❓</div><h3>No questions yet</h3><p>Ask the community anything</p><button class="btn btn-teal" style="margin-top:1rem" onclick="openCreatePost(\x27Question\x27)">Ask a Question</button></div>';
+      return;
+    }
+    el.innerHTML = list.map(p=>renderQACard(p)).join('');
+  } catch(e){
+    el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--text-dim)">Could not load<br><small>${e.message}</small></div>`;
+  }
+}
+
+function renderQACard(p) {
+  const ago = msgTimeAgo(p.created_at);
+  const answered = (p.proposals||0) > 0;
+  return `<div onclick="openPost('${p.id}')" style="background:white;border-radius:14px;padding:.9rem;margin-bottom:.6rem;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;border-left:4px solid #2563eb">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
+      <span style="font-size:.72rem;font-weight:700;color:#2563eb;background:#eff6ff;border-radius:8px;padding:.15rem .5rem">🔵 Question</span>
+      ${answered?'<span style="font-size:.65rem;font-weight:700;color:#16a34a;background:#f0fdf4;border-radius:8px;padding:.15rem .45rem">✓ Answered</span>':'<span style="font-size:.65rem;color:#dc2626;background:#fef2f2;border-radius:8px;padding:.15rem .45rem">Unanswered</span>'}
+      <span style="font-size:.68rem;color:var(--text-dim);margin-left:auto">${ago}</span>
+    </div>
+    <div style="font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.3rem">${p.title||'Untitled'}</div>
+    <div style="font-size:.78rem;color:var(--text-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${p.description||''}</div>
+    <div style="display:flex;gap:1rem;margin-top:.5rem;font-size:.68rem;color:var(--text-dim)">
+      <span>👤 ${p.author_name||'User'}</span>
+      <span>💬 ${p.proposals||0} answers</span>
+      <span>❤️ ${p.reactions||0} votes</span>
+    </div>
+  </div>`;
+}
+
+/* ══════ refreshCreatePostFields — adaptive create form ══════ */
+function refreshCreatePostFields(type) {
+  const pt = POST_TYPES[type] || POST_TYPES.Opportunity;
+  const descEl = document.getElementById('cpTypeDesc');
+  if(descEl) descEl.textContent = pt.desc || '';
+
+  // Show/hide extra fields based on type
+  const extraEl = document.getElementById('cpExtraFields');
+  if(!extraEl) return;
+
+  let html = '';
+  if(type === 'Opportunity') {
+    html = `
+      <div class="form-group"><label class="form-label">Product / Service Name</label><input class="form-input" id="cpProduct" placeholder="e.g. Palm oil, 500 litres"></div>
+      <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="cpLocation" placeholder="City or region"></div>
+      <div class="form-group"><label class="form-label">Available Until</label><input class="form-input" type="date" id="cpUntil"></div>`;
+  } else if(type === 'Idea') {
+    html = `
+      <div class="form-group"><label class="form-label">Stage</label>
+        <select class="form-input form-select" id="cpStage"><option>Concept</option><option>Prototype</option><option>MVP</option><option>Launched</option></select>
+      </div>
+      <div class="form-group"><label class="form-label" style="display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="cpOpenCollab"> Open for Collaboration</label></div>`;
+  } else if(type === 'Journal') {
+    html = `
+      <div class="form-group"><label class="form-label">Time Period</label><input class="form-input" id="cpPeriod" placeholder="e.g. Week of Jan 6–12"></div>
+      <div class="form-group"><label class="form-label">Milestone Type</label>
+        <select class="form-input form-select" id="cpMilestoneType"><option>Production</option><option>Business</option><option>Technical</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Result Achieved</label><input class="form-input" id="cpResult" placeholder="What did you achieve?"></div>`;
+  } else if(type === 'Request') {
+    html = `
+      <div class="form-group"><label class="form-label">Request Type</label>
+        <select class="form-input form-select" id="cpRequestType"><option>Item</option><option>Solution</option><option>Service</option><option>Person</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Urgency</label>
+        <select class="form-input form-select" id="cpUrgency"><option>Low</option><option>Medium</option><option selected>High</option></select>
+      </div>`;
+  }
+  extraEl.innerHTML = html;
+}
+
+
+function openUserTypeModal() {
+  if(!currentUser) { requireAuth('change user type'); return; }
+  const current = currentUser.userType || 'Individual';
+  const opts = USER_TYPES.map(t=>`<button onclick="setUserType('${t}');closeModal()" style="width:100%;text-align:left;padding:.7rem .9rem;border:none;background:${t===current?'rgba(0,178,169,.08)':'white'};color:${t===current?'var(--teal)':'var(--text)'};font-weight:${t===current?'700':'400'};border-bottom:1px solid var(--border);cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.85rem;border-radius:0">${t===current?'✓ ':''}&nbsp;${t}</button>`).join('');
+  openModal(`<div class="modal-title">👤 User Type</div><div style="font-size:.78rem;color:var(--text-dim);margin-bottom:.8rem">How would you best describe yourself? This personalises your experience.</div><div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">${opts}</div><button class="btn btn-outline" style="margin-top:.8rem;width:100%" onclick="closeModal()">Cancel</button>`);
+}
+
+async function setUserType(type) {
+  if(!currentUser) return;
+  try {
+    await sbFetch('PATCH','bz_users',{filter:`id=eq.${currentUser.id}`,body:{user_type:type}});
+    currentUser.userType = type;
+    const lbl = document.getElementById('userTypeLabel');
+    if(lbl) lbl.textContent = 'User Type: ' + type;
+    toast('User type updated','success');
+  } catch(e){ toast('Could not update: '+e.message,'error'); }
+}
+
 </script>
+
+<!-- ══════ EXPLORE / DISCOVERY SCREEN ══════ -->
+<div class="screen" id="screenExplore">
+  <div class="status-bar"><span id="clockEX">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Explore</span>
+      <div style="width:34px"></div>
+    </div>
+    <div class="header-sub">Discover people, projects &amp; needs</div>
+    <div class="search-bar" style="margin-top:.5rem">
+      <svg width="16" height="16" color="rgba(255,255,255,.6)"><use href="#g-search"/></svg>
+      <input type="text" id="exploreSearch" placeholder="Search posts, tags, people…" oninput="searchExplore(this.value)">
+    </div>
+  </div>
+  <div class="scroll-content" style="padding:0">
+    <!-- filter pills -->
+    <div style="background:white;padding:.65rem 1rem;display:flex;gap:.5rem;flex-wrap:wrap;border-bottom:1px solid var(--border)">
+      <button class="pill active" id="exPill_All"      onclick="setExploreFilter('All',this)">All</button>
+      <button class="pill"        id="exPill_Opportunity" onclick="setExploreFilter('Opportunity',this)">🟡 Opportunity</button>
+      <button class="pill"        id="exPill_Idea"     onclick="setExploreFilter('Idea',this)">🟣 Idea</button>
+      <button class="pill"        id="exPill_Request"  onclick="setExploreFilter('Request',this)">🟠 Request</button>
+      <button class="pill"        id="exPill_Question" onclick="setExploreFilter('Question',this)">🔵 Question</button>
+      <button class="pill"        id="exPill_Journal"  onclick="setExploreFilter('Journal',this)">🟢 Journal</button>
+    </div>
+    <!-- sort row -->
+    <div style="padding:.25rem 1rem .5rem;display:flex;gap:.5rem;align-items:center">
+      <span style="font-size:.72rem;color:var(--text-dim)">Sort:</span>
+      <button class="pill active" id="exSort_recent" onclick="setExploreSort('recent',this)" style="font-size:.68rem;padding:.2rem .6rem">Recent</button>
+      <button class="pill" id="exSort_trending" onclick="setExploreSort('trending',this)" style="font-size:.68rem;padding:.2rem .6rem">Trending</button>
+      <button class="pill" id="exSort_shared" onclick="setExploreSort('shared',this)" style="font-size:.68rem;padding:.2rem .6rem">Most Shared</button>
+    </div>
+    <div id="exploreList" style="padding:.25rem 1rem 5rem"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ══════ REQUESTS BOARD SCREEN ══════ -->
+<div class="screen" id="screenRequests">
+  <div class="status-bar"><span id="clockRQ">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Request Board</span>
+      <button class="icon-btn" onclick="if(requireAuth('post a request')) openCreatePost('Request')"><svg width="18" height="18" color="white"><use href="#g-plus"/></svg></button>
+    </div>
+    <div class="header-sub">Open requests from users &amp; institutions</div>
+  </div>
+  <div class="scroll-content" style="padding:0">
+    <!-- sort/filter -->
+    <div style="background:white;padding:.65rem 1rem;display:flex;gap:.5rem;flex-wrap:wrap;border-bottom:1px solid var(--border)">
+      <button class="pill active" id="rqPill_All" onclick="setRequestFilter('All',this)">All</button>
+      <button class="pill" id="rqPill_item" onclick="setRequestFilter('item',this)">Items</button>
+      <button class="pill" id="rqPill_service" onclick="setRequestFilter('service',this)">Services</button>
+      <button class="pill" id="rqPill_person" onclick="setRequestFilter('person',this)">People</button>
+      <button class="pill" id="rqPill_solution" onclick="setRequestFilter('solution',this)">Solutions</button>
+    </div>
+    <div id="requestsList" style="padding:.25rem 1rem 5rem"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ══════ Q&A SCREEN ══════ -->
+<div class="screen" id="screenQA">
+  <div class="status-bar"><span id="clockQA">6:00 PM</span><span>4G ●●●</span></div>
+  <div class="app-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="nav('screenHome')"><svg width="16" height="16"><use href="#g-back"/></svg></button>
+      <span class="header-title">Bizny Q&amp;A</span>
+      <button class="icon-btn" onclick="if(requireAuth('post a question')) openCreatePost('Question')"><svg width="18" height="18" color="white"><use href="#g-plus"/></svg></button>
+    </div>
+    <div class="header-sub">Community-driven knowledge &amp; advice</div>
+  </div>
+  <div class="scroll-content" style="padding:0">
+    <div style="background:white;padding:.65rem 1rem .65rem;display:flex;gap:.5rem;border-bottom:1px solid var(--border)">
+      <button class="pill active" id="qaPill_recent" onclick="setQASort('recent',this)">Recent</button>
+      <button class="pill" id="qaPill_votes" onclick="setQASort('votes',this)">Most Voted</button>
+      <button class="pill" id="qaPill_answered" onclick="setQASort('answered',this)">Answered</button>
+    </div>
+    <div id="qaList" style="padding:.75rem 1rem 5rem"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="nav('screenHome')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-home"/></svg></div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="nav('screenProjects')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-folder"/></svg></div><div class="nav-label">Projects</div></button>
+    <button class="nav-item" onclick="nav('screenPostBoard')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-globe"/></svg></div><div class="nav-label">Post Board</div></button>
+    <button class="nav-item" onclick="nav('screenAI')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-cpu"/></svg></div><div class="nav-label">AI Pilot</div></button>
+    <button class="nav-item" onclick="nav('screenProfile')"><div class="nav-icon"><svg width="22" height="22" color="var(--text-dim)"><use href="#g-user"/></svg></div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
 </body>
 </html>
